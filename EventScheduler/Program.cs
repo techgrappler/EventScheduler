@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EventScheduler.Interfaces;
+using EventScheduler.UI;
 
 namespace EventScheduler
 {
@@ -10,8 +12,11 @@ namespace EventScheduler
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            Console.WriteLine("Hello");
+            Console.ReadLine();
+            var ui = new MainUI();
+            ui.DisplayScreen();
+            Console.ReadLine();
         }
     }
 }
