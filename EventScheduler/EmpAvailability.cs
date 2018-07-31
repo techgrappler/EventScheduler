@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace EventScheduler
 {
-    public class Availability
+    public class EmpAvailability
     {
         public int EmployeeID { get; set; }
         public DateTime Time { get; set; }
         public bool IsAvailable { get; set; }
         public bool IsBooked { get; set; }
-
     }
 }

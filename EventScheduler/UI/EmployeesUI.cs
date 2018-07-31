@@ -8,18 +8,44 @@ using EventScheduler.UI;
 
 namespace EventScheduler.UI
 {
-    public class EmployeesUI : IUserInterface
+    public class EmployeesUI : UserInterface
     {
-        public string UserInput { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public void DisplayScreen()
+        public EmployeesUI()
         {
-            throw new NotImplementedException();
+
+        }
+        public EmployeesUI(string title)
+        {
+            this.HeaderTitle = title;
         }
 
-        public void GetInput()
+        public new void DisplayScreen()
         {
-            throw new NotImplementedException();
+            DisplayHeader();
+            DisplayBody();
+            DisplayFooter();
+        }
+
+        private new void DisplayBody()
+        {
+            Console.Write("Type 'add' to add an employee or 'remove' to remove an employee: ");
+            this.UserInput = Console.ReadLine();
+            if (UserInput == "main")
+            {
+                Console.Clear();
+                MainUI UI = new MainUI("Event Scheduler", "v1.0");
+                UI.DisplayScreen();
+            } else if (UserInput == "quit")
+            {
+                Environment.Exit(0);
+            } else if (UserInput == "add")
+            {
+                Console.WriteLine("Add Function Needs Written");
+            } else if (UserInput == "remove")
+            {
+                Console.WriteLine("Remove Function Needs Written");
+            }
         }
     }
 }

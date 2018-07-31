@@ -8,17 +8,17 @@ using EventScheduler.UI;
 
 namespace EventScheduler.UI
 {
-    public class AvailabilityUI : UserInterface
+    public class ServicesUI : UserInterface
     {
-        public AvailabilityUI()
+        public ServicesUI()
         {
 
         }
-        public AvailabilityUI(string title)
+        public ServicesUI(string title)
         {
             this.HeaderTitle = title;
         }
-
+       
         public new void DisplayScreen()
         {
             DisplayHeader();
@@ -26,9 +26,9 @@ namespace EventScheduler.UI
             DisplayFooter();
         }
 
-        private new void DisplayBody()
+        new void DisplayBody()
         {
-            Console.Write("Type 'view' to view availability or 'set' to set availability for an employee: ");
+            Console.Write("Type 'add' to add an service or 'remove' to remove a service: ");
             this.UserInput = Console.ReadLine();
             if (UserInput == "main")
             {
@@ -40,13 +40,13 @@ namespace EventScheduler.UI
             {
                 Environment.Exit(0);
             }
-            else if (UserInput == "view")
+            else if (UserInput == "add")
             {
-                Console.WriteLine("View Function Needs Written");
+                Console.WriteLine("Add Function Needs Written");
             }
-            else if (UserInput == "book")
+            else if (UserInput == "remove")
             {
-                Console.WriteLine("Book Function Needs Written");
+                Console.WriteLine("Remove Function Needs Written");
             }
         }
     }
