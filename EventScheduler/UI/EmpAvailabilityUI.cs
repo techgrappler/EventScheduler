@@ -6,20 +6,19 @@ using System.Threading.Tasks;
 using EventScheduler.Interfaces;
 using EventScheduler.UI;
 using EventScheduler.DBClasses;
-
 namespace EventScheduler.UI
 {
-    public class ServicesUI : UserInterface
+    public class EmpAvailabilityUI : UserInterface
     {
-        public ServicesUI()
+        public EmpAvailabilityUI()
         {
 
         }
-        public ServicesUI(string title)
+        public EmpAvailabilityUI(string title)
         {
             this.HeaderTitle = title;
         }
-       
+
         public new void DisplayScreen()
         {
             DisplayHeader();
@@ -29,19 +28,18 @@ namespace EventScheduler.UI
 
         private new void DisplayBody()
         {
-            var services = UseDB.ReadServices();
-            Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Service ID", "Service Name", "Description");
-            foreach (Service service in services)
+            var empAvailabilities = UseDB.ReadEmpAvailability();
+            Console.WriteLine("{0, -40} {1, -40} {2, -40}, {3, -40}", "Employee ID", "Time Slot", "Available", "Booked");
+            foreach (EmpAvailability empAvail in empAvailabilities)
             {
-                Console.WriteLine("{0, -40} {1, -40} {2, -40}", service.ID, service.Name, service.Description);
+                Console.WriteLine("{0, -40} {1, -40} {2, -40} {3, -40}", empAvail.EmployeeID, empAvail.Time, empAvail.IsAvailable, empAvail.IsBooked);
             }
         }
-        
         private new void DisplayFooter()
         {
             var options = new string[] {
-                "Add Service",
-                "Remove Service"
+                "View Availability",
+                "Set Availability"
             };
 
             var count = 1;

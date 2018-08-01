@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EventScheduler.Interfaces;
 using EventScheduler.UI;
+using EventScheduler.DBClasses;
 
 namespace EventScheduler.UI
 {
@@ -28,21 +29,47 @@ namespace EventScheduler.UI
         }
 
         private new void DisplayBody()
+        {    
+            var employees = UseDB.ReadEmployee();
+            Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Employee ID", "First Name", "Last Name");
+            foreach (Employee emp in employees)
+            {
+                Console.WriteLine("{0, -40} {1, -40} {2, -40}", emp.ID, emp.FName, emp.LName);
+            }
+        }
+
+        private new void DisplayFooter()
         {
-            Console.Write("Type 'add' to add an employee or 'remove' to remove an employee: ");
+            var options = new string[] {
+                "Add Employee",
+                "Remove Employee"
+            };
+
+            var count = 1;
+            foreach (string option in options)
+            {
+                Console.WriteLine("{0}. {1}", count, option);
+                count++;
+            }
+
+
+            Console.Write("Select from the options above (1-2): ");
             this.UserInput = Console.ReadLine();
             if (UserInput == "main")
             {
                 Console.Clear();
                 MainUI UI = new MainUI("Event Scheduler", "v1.0");
                 UI.DisplayScreen();
-            } else if (UserInput == "quit")
+            }
+            else if (UserInput == "quit")
             {
                 Environment.Exit(0);
-            } else if (UserInput == "add")
+            }
+            else if (UserInput == "1")
             {
-                Console.WriteLine("Add Function Needs Written");
-            } else if (UserInput == "remove")
+                Console.WriteLine("Addd Function Needs Written");
+            }
+            else if (UserInput == "2")
             {
                 Console.WriteLine("Remove Function Needs Written");
             }

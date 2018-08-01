@@ -16,7 +16,7 @@ namespace EventScheduler.Interfaces
 
         //Load UIs for each section of app
         AppointmentsUI appointmentsUI = new AppointmentsUI();
-        AvailabilityUI availabilityUI = new AvailabilityUI();
+        EmpAvailabilityUI availabilityUI = new EmpAvailabilityUI();
         EmployeesUI employeesUI = new EmployeesUI();
         ServicesUI servicesUI = new ServicesUI();
 

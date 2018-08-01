@@ -32,9 +32,15 @@ namespace EventScheduler
             //}
             //Console.ReadLine();
 
+
+            Console.SetWindowSize(224, 61);
+            UseDB.ConnectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = " + "\"C:\\Users\\Samuel Fletcher\\source\\repos\\EventScheduler\\EventScheduler\\TestDB.mdf\"" + "; Integrated Security = True; Connect Timeout = 30";
             MainUI UI = new MainUI("Event Scheduler", "v1.0");   
             UI.DisplayScreen();
             Console.ReadLine();
+   
+            
+
         }
     }
 }

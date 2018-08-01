@@ -13,5 +13,11 @@ namespace EventScheduler
         public int ServiceID { get; set; }
         public int EmployeeID { get; set; }
         public DateTime Time { get; set; }
+
+        public string CustomerName { get; set; }
+        public string ServiceName { get; set; }
+        public string EmployeeName { get; set; }
+
+
     }
 }

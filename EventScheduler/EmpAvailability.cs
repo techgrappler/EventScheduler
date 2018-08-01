@@ -12,5 +12,6 @@ namespace EventScheduler
         public DateTime Time { get; set; }
         public bool IsAvailable { get; set; }
         public bool IsBooked { get; set; }
+
     }
 }

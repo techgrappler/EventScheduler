@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EventScheduler.Interfaces;
-using EventScheduler.UI;
+using EventScheduler.DBClasses;
 
 namespace EventScheduler.UI
 {
@@ -28,7 +28,35 @@ namespace EventScheduler.UI
 
         private new void DisplayBody()
         {
-            Console.Write("Type 'view' to view appointments or 'book' to book a new appointment: ");
+            var appointments = UseDB.ReadAppointments();
+
+            appointments.OrderBy(appointment => appointment.Time);
+            appointments.OrderBy(appointment => appointment.EmployeeID);
+            Console.WriteLine("There are {0} appointments", appointments.Count);
+            Console.WriteLine("{0, -40} {1, -40} {2, -40} {3, -40}", "Employee", "Service", "Customer", "Date\\Time");
+            foreach (Appointment apt in appointments)
+            {
+                Console.WriteLine("{0, -40} {1, -40} {2, -40} {3, -40}", apt.EmployeeName, apt.ServiceName, apt.CustomerName, apt.Time);
+            }
+        }
+
+        private new void DisplayFooter()
+        {
+            var options = new string[] {
+                "View Appointments",
+                "Book New Appointment"
+            };
+
+            var count = 1;
+            foreach (string option in options)
+            {
+                Console.WriteLine("{0}. {1}", count, option);
+                count++;
+            }
+
+
+
+            Console.Write("Select from the options above (1-2): ");
             this.UserInput = Console.ReadLine();
             if (UserInput == "main")
             {
@@ -40,11 +68,11 @@ namespace EventScheduler.UI
             {
                 Environment.Exit(0);
             }
-            else if (UserInput == "view")
+            else if (UserInput == "1")
             {
                 Console.WriteLine("View Function Needs Written");
             }
-            else if (UserInput == "book")
+            else if (UserInput == "2")
             {
                 Console.WriteLine("Book Function Needs Written");
             }
