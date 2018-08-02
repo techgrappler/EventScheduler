@@ -19,7 +19,12 @@ namespace EventScheduler.UI
             DisplayBody();
             DisplayFooter();
         }
-
+        public void DisplayScreen(int option)
+        {
+            DisplayHeader(option);
+            DisplayBody(option);
+            DisplayFooter(option);
+        }
         public void GetInput()
         {
             this.UserInput = Console.ReadLine();
@@ -45,11 +50,11 @@ namespace EventScheduler.UI
         }
         protected void DisplayBody()
         {
-            Console.WriteLine("This is where the body goes");
+            Console.WriteLine("Body Content Goes Here");
         }
         protected void DisplayFooter()
         {
-            Console.Write("Type 'main' to return to the main menu or 'Q' to quit at any time. ");
+            Console.Write("Type 'main' to return to the main menu or 'quit' to quit at any time. ");
             this.UserInput = Console.ReadLine();
             if (UserInput == "main")
             {
@@ -60,6 +65,19 @@ namespace EventScheduler.UI
             {
                 Environment.Exit(0);
             }
+        }
+
+        protected void DisplayHeader(int option)
+        {
+            Console.WriteLine("Customized Header Content Goes Here");
+        }
+        protected void DisplayBody(int option)
+        {
+            Console.WriteLine("Customized Body Content Goes Here");
+        }
+        protected void DisplayFooter(int option)
+        {
+            Console.WriteLine("Customized Footer Content Goes Here");
         }
 
     }

@@ -28,8 +28,8 @@ namespace EventScheduler.UI
 
         private new void DisplayBody()
         {
-            var empAvailabilities = UseDB.ReadEmpAvailability();
-            Console.WriteLine("{0, -40} {1, -40} {2, -40}, {3, -40}", "Employee ID", "Time Slot", "Available", "Booked");
+            var empAvailabilities = UseDB.SelectEmpAvailabilities();
+            Console.WriteLine("{0, -40} {1, -40} {2, -40} {3, -40}", "Employee ID", "Time Slot", "Available", "Booked");
             foreach (EmpAvailability empAvail in empAvailabilities)
             {
                 Console.WriteLine("{0, -40} {1, -40} {2, -40} {3, -40}", empAvail.EmployeeID, empAvail.Time, empAvail.IsAvailable, empAvail.IsBooked);
@@ -48,7 +48,7 @@ namespace EventScheduler.UI
                 Console.WriteLine("{0}. {1}", count, option);
                 count++;
             }
-
+            Console.WriteLine("Type 'main' to return to main menu or 'quit' to exit the program.");
 
             Console.Write("Select from the options above (1-2): ");
             this.UserInput = Console.ReadLine();

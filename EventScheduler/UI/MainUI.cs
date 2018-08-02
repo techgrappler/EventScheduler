@@ -43,14 +43,10 @@ namespace EventScheduler.Interfaces
 
             //Create List of Options for User to Select
             var options = new string[] {
-                "Add Employee",
-                "Remove Employee",
-                "Add Service",
-                "Remove Service",
-                "View Appointments",
-                "Book New Appointment",
-                "View Availability",
-                "Set Availability"
+                "Manage Employees",
+                "Manage Services Offered",
+                "Manage Appointments",
+                "Manage Availability"
             };
 
             var count = 1;
@@ -64,32 +60,32 @@ namespace EventScheduler.Interfaces
 
         new void DisplayFooter()
         {
-            Console.Write("Select from the options above (1-8): ");
+            Console.Write("Select from the options above (1-3): ");
             this.UserInput = Console.ReadLine();
             string selection = this.UserInput;
 
-            if (selection == "1" || selection == "2")
+            if (selection == "1")
             {
                 Console.Clear();
-                employeesUI.HeaderTitle = "Add/Remove Employees";
+                employeesUI.HeaderTitle = "Manage Employees";
                 employeesUI.DisplayScreen();
             }
-            if (selection == "3" || selection == "4")
+            if (selection == "2")
             {
                 Console.Clear();
-                servicesUI.HeaderTitle = "Add/Remove Services";
+                servicesUI.HeaderTitle = "Manage Services Offered";
                 servicesUI.DisplayScreen();
             }
-            else if (selection == "5" || selection == "6")
+            else if (selection == "3")
             {
                 Console.Clear();
-                appointmentsUI.HeaderTitle = "View / Book Appointments";
+                appointmentsUI.HeaderTitle = "Manage Appointments";
                 appointmentsUI.DisplayScreen();
             }
-            else if (selection == "7" || selection == "8")
+            else if (selection == "4")
             {
                 Console.Clear();
-                availabilityUI.HeaderTitle = "View / Set Availability";
+                availabilityUI.HeaderTitle = "Manage Availability";
                 availabilityUI.DisplayScreen();
             }
             else if (UserInput == "quit")

@@ -14,5 +14,11 @@ namespace EventScheduler
             this.FName = fname;
             this.LName = lname;
         }
+
+        public Employee(string fname, string lname)
+        {
+            this.FName = fname;
+            this.LName = lname;
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace EventScheduler.Interfaces
     {
         string UserInput { get; set; }
         void DisplayScreen();
+        void DisplayScreen(int option);
         void GetInput();
     }
 }
