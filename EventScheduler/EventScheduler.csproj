@@ -66,6 +66,7 @@
     <Compile Include="Interfaces\IUserInterface.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="TimeSlot.cs" />
+    <Compile Include="UI\CustomersUI.cs" />
     <Compile Include="UI\EmpAvailabilityUI.cs" />
     <Compile Include="UI\EmployeesUI.cs" />
     <Compile Include="UI\AppointmentsUI.cs" />
@@ -75,9 +76,11 @@
     <Compile Include="UI\ServicesUI.cs" />
     <Compile Include="UI\UserInterface.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Validators\ValidateInput.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="UMLClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestDB.mdf">

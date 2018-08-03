@@ -21,14 +21,14 @@ namespace EventScheduler.UI
             this.HeaderTitle = title;
         }
 
-        public new void DisplayScreen()
+        public override void DisplayScreen()
         {
             DisplayHeader();
             DisplayBody();
             DisplayFooter();
         }
 
-        private new void DisplayBody()
+        public override void DisplayBody()
         {    
             var employees = UseDB.SelectEmployees();
             Console.WriteLine("{0, -20} {1, -20} {2, -20}", "Employee ID", "First Name", "Last Name");
@@ -37,13 +37,13 @@ namespace EventScheduler.UI
                 Console.WriteLine("{0, -20} {1, -20} {2, -20}", emp.ID, emp.FName, emp.LName);
             }
         }
-        private new void DisplayBody(int option)
+        public override void DisplayBody(int option)
         {
 
 
         }
 
-        private new void DisplayFooter()
+        public override void DisplayFooter()
         {
             var options = new string[] {
                 "Add Employee",
@@ -83,101 +83,114 @@ namespace EventScheduler.UI
                 DisplayFooter(2);
             }
         }
-        private new void DisplayFooter(int option)
+        public override void DisplayFooter(int option)
         {
-            EmployeesUI employeesUI = new EmployeesUI();
-            if (option == 1)
+            while (true)
             {
-                string firstName;
-                string lastName;
-                while (true)
+                if (option == 1)
                 {
-                    Console.WriteLine("Enter the Employee's first name: ");
-                    firstName = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(firstName))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input. Try again.");
-                    }
-               
+                    Employee emp = AddEmployee();
+                    if (ConfirmAdd(emp)) { UseDB.InsertEmployee(emp.FName, emp.LName); }
+                    Console.Clear();
+                    this.DisplayScreen();
                 }
-                while (true)
+                else if (option == 2)
                 {
-                    Console.WriteLine("Enter the Employee's last name: ");
-                    lastName = Console.ReadLine();
-                    if(!string.IsNullOrEmpty(lastName))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input. Try again.");
-                    }
-                }
-                while (true)
-                {
-                    Console.WriteLine("Are you sure you want to add {0} {1} ('yes' or 'no')?", firstName, lastName);
-                    string confirmation = Console.ReadLine();
-                    if (confirmation == "yes")
-                    {
-                        UseDB.InsertEmployee(firstName, lastName);
-                        Console.Clear();
-                        employeesUI.HeaderTitle = "Manage Employees";
-                        employeesUI.DisplayScreen();
-                    }
-                    else if (confirmation == "no")
-                    {
-                        Console.Clear();
-                        employeesUI.HeaderTitle = "Manage Employees";
-                        employeesUI.DisplayScreen();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Try again.");
-                    }
+                    int empID = RemoveEmployee();
+                    if (ConfirmRemove(empID)) { UseDB.DeleteEmployee(empID); }
+                    Console.Clear();
+                    this.DisplayScreen();
                 }
             }
-            if (option == 2)
+        }
+
+        private Employee AddEmployee()
+        {
+            string firstName;
+            string lastName;
+            while (true)
             {
-                string id;
-                int idInt;
-
-                while (true)
+                Console.WriteLine("Enter the Employee's first name: ");
+                firstName = Console.ReadLine();
+                if (!string.IsNullOrEmpty(firstName))
                 {
-                    Console.WriteLine("Enter the ID of the Employee you wish to remove: ");
-                    id = Console.ReadLine();
-                    if (Int32.TryParse(id, out idInt))
-                    {
-                        break;
-                    } else { Console.WriteLine("Invalid Input. Try Again."); }
-
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input. Try again.");
                 }
 
-
-                while (true)
+            }
+            while (true)
+            {
+                Console.WriteLine("Enter the Employee's last name: ");
+                lastName = Console.ReadLine();
+                if (!string.IsNullOrEmpty(lastName))
                 {
-                    Console.WriteLine("Are you sure you want to remove employee with ID {0}('yes' or 'no')?", id);
-                    string confirmation = Console.ReadLine();
-                    if (confirmation == "yes")
-                    {
-                        UseDB.DeleteEmployee(Int32.Parse(id));
-                        Console.Clear();
-                        employeesUI.HeaderTitle = "Manage Employees";
-                        employeesUI.DisplayScreen();
-                    }
-                    else if (confirmation == "no")
-                    {
-                        Console.Clear();
-                        employeesUI.HeaderTitle = "Manage Employees";
-                        employeesUI.DisplayScreen();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Try again.");
-                    }
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input. Try again.");
+                }
+            }
+            return new Employee(firstName, lastName);
+        }
+        private int RemoveEmployee()
+        {
+            string id;
+            int idInt;
+
+            while (true)
+            {
+                Console.WriteLine("Enter the ID of the Employee you wish to remove: ");
+                id = Console.ReadLine();
+                if (Int32.TryParse(id, out idInt))
+                {
+                    return idInt;
+                }
+                else { Console.WriteLine("Invalid Input. Try Again."); }
+
+            }
+        }
+        private bool ConfirmAdd(Employee emp)
+        {
+            while (true)
+            {
+                Console.WriteLine("Are you sure you want add {0} {1} as an employee?", emp.FName, emp.LName);
+                UserInput = Console.ReadLine();
+                if (UserInput == "yes")
+                {
+                    return true;
+                }
+                else if (UserInput == "no")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                }
+            }
+        }
+        private bool ConfirmRemove(int empID)
+        {
+            while (true)
+            {
+                Console.WriteLine("Are you sure you want to remove the employee with ID {0} ('yes' or 'np) ?", empID);
+                UserInput = Console.ReadLine();
+                if (UserInput == "yes")
+                {
+                    return true;
+                }
+                else if (UserInput == "no")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Try again.");
                 }
             }
         }

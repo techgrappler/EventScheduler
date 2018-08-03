@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EventScheduler.Interfaces;
 using EventScheduler.UI;
 using EventScheduler.DBClasses;
+using EventScheduler.Validators;
 
 namespace EventScheduler
 {
@@ -32,14 +33,22 @@ namespace EventScheduler
             //}
             //Console.ReadLine();
 
+            //int num = 8;
+            //string str = "Hello";
+            //string[] str2 = new string[] { "Hello", "My name is Sam" };
 
+            //ValidateInput validate = new ValidateInput();
+            //string value = validate.ValidateString(num);
+
+            //Console.WriteLine("The input type is a: {0}", value);
+            //Console.ReadLine();
             Console.SetWindowSize(200, 50);
             UseDB.ConnectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = " + "\"C:\\Users\\Samuel Fletcher\\source\\repos\\EventScheduler\\EventScheduler\\TestDB.mdf\"" + "; Integrated Security = True; Connect Timeout = 30";
-            MainUI UI = new MainUI("Event Scheduler", "v1.0");   
+            MainUI UI = new MainUI("Event Scheduler", "v1.0");
             UI.DisplayScreen();
             Console.ReadLine();
-   
-            
+
+
 
         }
     }

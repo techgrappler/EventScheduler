@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EventScheduler.Interfaces;
 using EventScheduler.DBClasses;
+using EventScheduler.UI;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -28,7 +29,7 @@ namespace EventScheduler.UI
             DisplayFooter();
         }
 
-        private new void DisplayBody()
+        public override void DisplayBody()
         {
             var appointments = UseDB.SelectAppointments();
 
@@ -41,7 +42,7 @@ namespace EventScheduler.UI
                 Console.WriteLine("{0, -30} {1, -30} {2, -30} {3, -30} {4, -30}", apt.EmployeeName, apt.ServiceName, apt.CustomerName, apt.StartTime, apt.EndTime);
             }
         }
-        private new void DisplayFooter()
+        public override void DisplayFooter()
         {
             var options = new string[] {
                 "View Appointments",
@@ -73,17 +74,18 @@ namespace EventScheduler.UI
             }
             else if (UserInput == "2")
             {
+                Console.Clear();
                 DisplayHeader();
                 DisplayBody(2);
                 DisplayFooter(2);
             }
         }
 
-        private new void DisplayBody(int option)
+        public override void DisplayBody(int option)
         {
 
         }
-        private new void DisplayFooter(int option)
+        public override void DisplayFooter(int option)
         {
             AppointmentsUI appointmentsUI = new AppointmentsUI();
 
@@ -99,6 +101,85 @@ namespace EventScheduler.UI
                 DateTime startTime = new DateTime();
                 DateTime endTime = new DateTime();
 
+
+                var customers = UseDB.SelectCustomers();
+                Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Customer ID", "First Name", "Last Name");
+                foreach (Customer cust in customers)
+                {
+                    Console.WriteLine("{0, -40} {1, -40} {2, -40}", cust.ID, cust.FName, cust.LName);
+                }
+                while (true)
+                {
+                    Console.WriteLine("Enter the ID of the customer for which you are scheduling an event or type 'new' to add a new customer: ");
+                    UserInput = Console.ReadLine();
+                    if (Int32.TryParse(UserInput, out customerID))
+                    {
+                        break;
+                    }
+                    else if (UserInput == "new")
+                    {
+                        CustomersUI customersUI = new CustomersUI();
+                        {
+                            string firstName;
+                            string lastName;
+                            while (true)
+                            {
+                                Console.WriteLine("Enter the Customer's first name: ");
+                                firstName = Console.ReadLine();
+                                if (!string.IsNullOrEmpty(firstName))
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Input. Try again.");
+                                }
+
+                            }
+                            while (true)
+                            {
+                                Console.WriteLine("Enter the Customer's last name: ");
+                                lastName = Console.ReadLine();
+                                if (!string.IsNullOrEmpty(lastName))
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Input. Try again.");
+                                }
+                            }
+                            while (true)
+                            {
+                                Console.WriteLine("Are you sure you want to add {0} {1} ('yes' or 'no')?", firstName, lastName);
+                                string confirmation = Console.ReadLine();
+                                if (confirmation == "yes")
+                                {
+                                    UseDB.InsertCustomer(firstName, lastName);
+                                    Console.Clear();
+                                    DisplayHeader();
+                                    DisplayBody(2);
+                                  
+                                    DisplayFooter(2);
+                                    Console.WriteLine("User Added");
+                                }
+                                else if (confirmation == "no")
+                                {
+                                    Console.Clear();
+                                    DisplayHeader();
+                                    DisplayBody(2);
+                                    DisplayFooter(2);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid input. Try again.");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    { Console.WriteLine("Invalid Input. Try again."); }
+                }
 
                 var services = UseDB.SelectServices();
                 Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Service ID", "Service Name", "Description");
@@ -131,24 +212,6 @@ namespace EventScheduler.UI
                     Console.WriteLine("Enter the ID of the employee that will perform the service: ");
                     UserInput = Console.ReadLine();
                     if (Int32.TryParse(UserInput, out employeeID))
-                    {
-                        break;
-                    }
-                    else { Console.WriteLine("Invalid Input. Try again."); }
-                }
-
-
-                var customers = UseDB.SelectCustomers();
-                Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Customer ID", "First Name", "Last Name");
-                foreach (Customer cust in customers)
-                {
-                    Console.WriteLine("{0, -40} {1, -40} {2, -40}", cust.ID, cust.FName, cust.LName);
-                }
-                while (true)
-                {
-                    Console.WriteLine("Which customer is the service for?  (enter id number): ");
-                    UserInput = Console.ReadLine();
-                    if (Int32.TryParse(UserInput, out customerID))
                     {
                         break;
                     }

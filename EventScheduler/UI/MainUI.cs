@@ -19,6 +19,7 @@ namespace EventScheduler.Interfaces
         EmpAvailabilityUI availabilityUI = new EmpAvailabilityUI();
         EmployeesUI employeesUI = new EmployeesUI();
         ServicesUI servicesUI = new ServicesUI();
+        CustomersUI customersUI = new CustomersUI();
 
         public MainUI(string appName, string appVersion)
         {
@@ -44,6 +45,7 @@ namespace EventScheduler.Interfaces
             //Create List of Options for User to Select
             var options = new string[] {
                 "Manage Employees",
+                "Manage Customers",
                 "Manage Services Offered",
                 "Manage Appointments",
                 "Manage Availability"
@@ -60,7 +62,7 @@ namespace EventScheduler.Interfaces
 
         new void DisplayFooter()
         {
-            Console.Write("Select from the options above (1-3): ");
+            Console.Write("Select from the options above (1-5): ");
             this.UserInput = Console.ReadLine();
             string selection = this.UserInput;
 
@@ -73,16 +75,22 @@ namespace EventScheduler.Interfaces
             if (selection == "2")
             {
                 Console.Clear();
+                customersUI.HeaderTitle = "Manage Customers";
+                customersUI.DisplayScreen();
+            }
+            if (selection == "3")
+            {
+                Console.Clear();
                 servicesUI.HeaderTitle = "Manage Services Offered";
                 servicesUI.DisplayScreen();
             }
-            else if (selection == "3")
+            else if (selection == "4")
             {
                 Console.Clear();
                 appointmentsUI.HeaderTitle = "Manage Appointments";
                 appointmentsUI.DisplayScreen();
             }
-            else if (selection == "4")
+            else if (selection == "5")
             {
                 Console.Clear();
                 availabilityUI.HeaderTitle = "Manage Availability";

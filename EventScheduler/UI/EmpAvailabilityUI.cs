@@ -19,14 +19,14 @@ namespace EventScheduler.UI
             this.HeaderTitle = title;
         }
 
-        public new void DisplayScreen()
+        public override void DisplayScreen()
         {
             DisplayHeader();
             DisplayBody();
             DisplayFooter();
         }
 
-        private new void DisplayBody()
+        public override void DisplayBody()
         {
             var empAvailabilities = UseDB.SelectEmpAvailabilities();
             Console.WriteLine("{0, -40} {1, -40} {2, -40} {3, -40}", "Employee ID", "Time Slot", "Available", "Booked");
@@ -35,7 +35,7 @@ namespace EventScheduler.UI
                 Console.WriteLine("{0, -40} {1, -40} {2, -40} {3, -40}", empAvail.EmployeeID, empAvail.Time, empAvail.IsAvailable, empAvail.IsBooked);
             }
         }
-        private new void DisplayFooter()
+        public override void DisplayFooter()
         {
             var options = new string[] {
                 "View Availability",

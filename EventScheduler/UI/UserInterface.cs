@@ -13,24 +13,24 @@ namespace EventScheduler.UI
         public string UserInput { get; set;}
         public string HeaderTitle { get; set; }
 
-        public void DisplayScreen()
+        public virtual void DisplayScreen()
         {
             DisplayHeader();
             DisplayBody();
             DisplayFooter();
         }
-        public void DisplayScreen(int option)
+        public virtual void DisplayScreen(int option)
         {
             DisplayHeader(option);
             DisplayBody(option);
             DisplayFooter(option);
         }
-        public void GetInput()
+        public virtual void GetInput()
         {
             this.UserInput = Console.ReadLine();
         }
 
-        protected void DisplayHeader()
+        public virtual void DisplayHeader()
         {
             Console.Write("**********");
             for (int i = 0; i < HeaderTitle.Length - 1; i++)
@@ -48,11 +48,11 @@ namespace EventScheduler.UI
             Console.Write("**********");
             Console.WriteLine();
         }
-        protected void DisplayBody()
+        public virtual void DisplayBody()
         {
             Console.WriteLine("Body Content Goes Here");
         }
-        protected void DisplayFooter()
+        public virtual void DisplayFooter()
         {
             Console.Write("Type 'main' to return to the main menu or 'quit' to quit at any time. ");
             this.UserInput = Console.ReadLine();
@@ -67,15 +67,15 @@ namespace EventScheduler.UI
             }
         }
 
-        protected void DisplayHeader(int option)
+        public virtual void DisplayHeader(int option)
         {
             Console.WriteLine("Customized Header Content Goes Here");
         }
-        protected void DisplayBody(int option)
+        public virtual void DisplayBody(int option)
         {
             Console.WriteLine("Customized Body Content Goes Here");
         }
-        protected void DisplayFooter(int option)
+        public virtual void DisplayFooter(int option)
         {
             Console.WriteLine("Customized Footer Content Goes Here");
         }

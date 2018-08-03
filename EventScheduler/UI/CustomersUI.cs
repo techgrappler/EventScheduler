@@ -9,18 +9,19 @@ using EventScheduler.DBClasses;
 
 namespace EventScheduler.UI
 {
-    public class ServicesUI : UserInterface
+    public class CustomersUI : UserInterface
     {
-        public ServicesUI()
+
+        public CustomersUI()
         {
 
         }
-        public ServicesUI(string title)
+        public CustomersUI(string title)
         {
             this.HeaderTitle = title;
         }
-       
-        public new void DisplayScreen()
+
+        public override void DisplayScreen()
         {
             DisplayHeader();
             DisplayBody();
@@ -29,19 +30,24 @@ namespace EventScheduler.UI
 
         public override void DisplayBody()
         {
-            var services = UseDB.SelectServices();
-            Console.WriteLine("{0, -20} {1, -30} {2, -40}", "Service ID", "Service Name", "Description");
-            foreach (Service service in services)
+            var customers = UseDB.SelectCustomers();
+            Console.WriteLine("{0, -20} {1, -20} {2, -20}", "Customer ID", "First Name", "Last Name");
+            foreach (Customer cust in customers)
             {
-                Console.WriteLine("{0, -20} {1, -30} {2, -40}", service.ID, service.Name, service.Description);
+                Console.WriteLine("{0, -20} {1, -20} {2, -20}", cust.ID, cust.FName, cust.LName);
             }
         }
-        
+        public override void DisplayBody(int option)
+        {
+
+
+        }
+
         public override void DisplayFooter()
         {
             var options = new string[] {
-                "Add Service",
-                "Remove Service"
+                "Add Customer",
+                "Remove Customer"
             };
 
             var count = 1;
@@ -77,20 +83,18 @@ namespace EventScheduler.UI
                 DisplayFooter(2);
             }
         }
-
         public override void DisplayFooter(int option)
         {
-            ServicesUI servicesUI = new ServicesUI();
+            CustomersUI customersUI = new CustomersUI();
             if (option == 1)
             {
-                string serviceName;
-                string serviceDescription;
-
+                string firstName;
+                string lastName;
                 while (true)
                 {
-                    Console.WriteLine("Enter a name for the service you would like to add: ");
-                    serviceName = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(serviceName))
+                    Console.WriteLine("Enter the Customer's first name: ");
+                    firstName = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(firstName))
                     {
                         break;
                     }
@@ -102,9 +106,9 @@ namespace EventScheduler.UI
                 }
                 while (true)
                 {
-                    Console.WriteLine("Enter a description: ");
-                    serviceDescription = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(serviceDescription))
+                    Console.WriteLine("Enter the Customer's last name: ");
+                    lastName = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(lastName))
                     {
                         break;
                     }
@@ -112,24 +116,23 @@ namespace EventScheduler.UI
                     {
                         Console.WriteLine("Invalid Input. Try again.");
                     }
-
                 }
                 while (true)
                 {
-                    Console.WriteLine("Are you sure you want to add the {0} service ('yes' or 'no')?", serviceName);
+                    Console.WriteLine("Are you sure you want to add {0} {1} ('yes' or 'no')?", firstName, lastName);
                     string confirmation = Console.ReadLine();
                     if (confirmation == "yes")
                     {
-                        UseDB.InsertService(serviceName, serviceDescription);
+                        UseDB.InsertCustomer(firstName, lastName);
                         Console.Clear();
-                        servicesUI.HeaderTitle = "Manage Services";
-                        servicesUI.DisplayScreen();
+                        customersUI.HeaderTitle = "Manage Customers";
+                        customersUI.DisplayScreen();
                     }
                     else if (confirmation == "no")
                     {
                         Console.Clear();
-                        servicesUI.HeaderTitle = "Manage Services";
-                        servicesUI.DisplayScreen();
+                        customersUI.HeaderTitle = "Manage Customers";
+                        customersUI.DisplayScreen();
                     }
                     else
                     {
@@ -137,40 +140,40 @@ namespace EventScheduler.UI
                     }
                 }
             }
-
             if (option == 2)
             {
-
                 string id;
                 int idInt;
 
                 while (true)
                 {
-                    Console.WriteLine("Enter the ID of the Service you wish to remove: ");
+                    Console.WriteLine("Enter the ID of the Customer you wish to remove: ");
                     id = Console.ReadLine();
                     if (Int32.TryParse(id, out idInt))
                     {
                         break;
                     }
                     else { Console.WriteLine("Invalid Input. Try Again."); }
+
                 }
+
 
                 while (true)
                 {
-                    Console.WriteLine("Are you sure you want to remove the Service with ID {0}('yes' or 'no')?", id);
+                    Console.WriteLine("Are you sure you want to remove customer with ID {0}('yes' or 'no')?", id);
                     string confirmation = Console.ReadLine();
                     if (confirmation == "yes")
                     {
-                        UseDB.DeleteService(Int32.Parse(id));
+                        UseDB.DeleteCustomer(Int32.Parse(id));
                         Console.Clear();
-                        servicesUI.HeaderTitle = "Manage Services";
-                        servicesUI.DisplayScreen();
+                        customersUI.HeaderTitle = "Manage Customers";
+                        customersUI.DisplayScreen();
                     }
                     else if (confirmation == "no")
                     {
                         Console.Clear();
-                        servicesUI.HeaderTitle = "Manage Services";
-                        servicesUI.DisplayScreen();
+                        customersUI.HeaderTitle = "Manage Customers";
+                        customersUI.DisplayScreen();
                     }
                     else
                     {
