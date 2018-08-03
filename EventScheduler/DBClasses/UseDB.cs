@@ -124,7 +124,10 @@ namespace EventScheduler.DBClasses
                 {
                     while (reader.Read())
                     {
-                        var cust = new Customer(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+                        var cust = new Customer();
+                        cust.ID = reader.GetInt32(0);
+                        cust.FName = reader.GetString(1);
+                        cust.LName = reader.GetString(2);
                         customers.Add(cust);
                     }
                 }
@@ -218,15 +221,17 @@ namespace EventScheduler.DBClasses
             }
         }
 
-        public static void InsertCustomer(string firstName, string lastName)
+        public static int InsertCustomer(string firstName, string lastName)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO Customers (FName, LName) VALUES (@firstName, @lastName) ", connection);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Customers (FName, LName) VALUES (@firstName, @lastName); SELECT SCOPE_IDENTITY()", connection);
                 cmd.Parameters.AddWithValue("@firstName", firstName);
                 cmd.Parameters.AddWithValue("@lastName", lastName);
+                int lastInsertedID = Convert.ToInt32(cmd.ExecuteScalar());
                 cmd.ExecuteNonQuery();
+                return lastInsertedID;
             }
         }
 

@@ -8,9 +8,12 @@ namespace EventScheduler
 {
     public class Customer : User
     {
-        public Customer(int id, string fname, string lname)
+        public Customer()
         {
-            this.ID = id;
+
+        }
+        public Customer(string fname, string lname)
+        {
             this.FName = fname;
             this.LName = lname;
         }

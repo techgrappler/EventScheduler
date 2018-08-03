@@ -29,13 +29,8 @@ namespace EventScheduler.UI
         }
 
         public override void DisplayBody()
-        {    
-            var employees = UseDB.SelectEmployees();
-            Console.WriteLine("{0, -20} {1, -20} {2, -20}", "Employee ID", "First Name", "Last Name");
-            foreach (Employee emp in employees)
-            {
-                Console.WriteLine("{0, -20} {1, -20} {2, -20}", emp.ID, emp.FName, emp.LName);
-            }
+        {
+            this.DisplayEmployees();
         }
         public override void DisplayBody(int option)
         {
@@ -178,7 +173,7 @@ namespace EventScheduler.UI
         {
             while (true)
             {
-                Console.WriteLine("Are you sure you want to remove the employee with ID {0} ('yes' or 'np) ?", empID);
+                Console.WriteLine("Are you sure you want to remove the employee with ID {0} ('yes' or 'no) ?", empID);
                 UserInput = Console.ReadLine();
                 if (UserInput == "yes")
                 {
@@ -192,6 +187,15 @@ namespace EventScheduler.UI
                 {
                     Console.WriteLine("Invalid input. Try again.");
                 }
+            }
+        }
+        public void DisplayEmployees()
+        {
+            var employees = UseDB.SelectEmployees();
+            Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Employee ID", "First Name", "Last Name");
+            foreach (Employee emp in employees)
+            {
+                Console.WriteLine("{0, -40} {1, -40} {2, -40}", emp.ID, emp.FName, emp.LName);
             }
         }
     }

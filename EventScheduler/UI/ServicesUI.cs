@@ -29,12 +29,7 @@ namespace EventScheduler.UI
 
         public override void DisplayBody()
         {
-            var services = UseDB.SelectServices();
-            Console.WriteLine("{0, -20} {1, -30} {2, -40}", "Service ID", "Service Name", "Description");
-            foreach (Service service in services)
-            {
-                Console.WriteLine("{0, -20} {1, -30} {2, -40}", service.ID, service.Name, service.Description);
-            }
+            this.DisplayServices();
         }
 
         public override void DisplayFooter()
@@ -173,7 +168,7 @@ namespace EventScheduler.UI
         {
             while (true)
             {
-                Console.WriteLine("Are you sure you want to remove the service with ID {0} ('yes' or 'np) ?", serviceID);
+                Console.WriteLine("Are you sure you want to remove the service with ID {0} ('yes' or 'no) ?", serviceID);
                 UserInput = Console.ReadLine();
                 if (UserInput == "yes")
                 {
@@ -187,6 +182,15 @@ namespace EventScheduler.UI
                 {
                     Console.WriteLine("Invalid input. Try again.");
                 }
+            }
+        }
+        public void DisplayServices()
+        {
+            var services = UseDB.SelectServices();
+            Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Service ID", "Service Name", "Description");
+            foreach (Service service in services)
+            {
+                Console.WriteLine("{0, -40} {1, -40} {2, -40}", service.ID, service.Name, service.Description);
             }
         }
     }

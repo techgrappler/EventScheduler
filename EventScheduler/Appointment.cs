@@ -19,6 +19,18 @@ namespace EventScheduler
         public string ServiceName { get; set; }
         public string EmployeeName { get; set; }
 
+        public Appointment()
+        {
+
+        }
+        public Appointment(int customerID, int serviceId, int employeeID, DateTime startTime, DateTime endTime)
+        {
+            this.CustomerID = customerID;
+            this.ServiceID = serviceId;
+            this.EmployeeID = employeeID;
+            this.StartTime = startTime;
+            this.EndTime = endTime;
+        }
 
     }
 }

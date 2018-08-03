@@ -85,101 +85,123 @@ namespace EventScheduler.UI
         }
         public override void DisplayFooter(int option)
         {
-            CustomersUI customersUI = new CustomersUI();
-            if (option == 1)
+            while (true)
             {
-                string firstName;
-                string lastName;
-                while (true)
+                if (option == 1)
                 {
-                    Console.WriteLine("Enter the Customer's first name: ");
-                    firstName = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(firstName))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input. Try again.");
-                    }
-
+                    Customer cust = AddCustomer();
+                    if (ConfirmAdd(cust)) { UseDB.InsertCustomer(cust.FName, cust.LName); }
+                    Console.Clear();
+                    this.DisplayScreen();
                 }
-                while (true)
+                else if (option == 2)
                 {
-                    Console.WriteLine("Enter the Customer's last name: ");
-                    lastName = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(lastName))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input. Try again.");
-                    }
-                }
-                while (true)
-                {
-                    Console.WriteLine("Are you sure you want to add {0} {1} ('yes' or 'no')?", firstName, lastName);
-                    string confirmation = Console.ReadLine();
-                    if (confirmation == "yes")
-                    {
-                        UseDB.InsertCustomer(firstName, lastName);
-                        Console.Clear();
-                        customersUI.HeaderTitle = "Manage Customers";
-                        customersUI.DisplayScreen();
-                    }
-                    else if (confirmation == "no")
-                    {
-                        Console.Clear();
-                        customersUI.HeaderTitle = "Manage Customers";
-                        customersUI.DisplayScreen();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Try again.");
-                    }
+                    int custID = RemoveCustomer();
+                    if (ConfirmRemove(custID)) { UseDB.DeleteCustomer(custID); }
+                    Console.Clear();
+                    this.DisplayScreen();
                 }
             }
-            if (option == 2)
+        }
+
+        public Customer AddCustomer()
+        {
+            string firstName;
+            string lastName;
+            while (true)
             {
-                string id;
-                int idInt;
-
-                while (true)
+                Console.WriteLine("Enter the Customer's first name: ");
+                firstName = Console.ReadLine();
+                if (!string.IsNullOrEmpty(firstName))
                 {
-                    Console.WriteLine("Enter the ID of the Customer you wish to remove: ");
-                    id = Console.ReadLine();
-                    if (Int32.TryParse(id, out idInt))
-                    {
-                        break;
-                    }
-                    else { Console.WriteLine("Invalid Input. Try Again."); }
-
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input. Try again.");
                 }
 
-
-                while (true)
+            }
+            while (true)
+            {
+                Console.WriteLine("Enter the Customer's last name: ");
+                lastName = Console.ReadLine();
+                if (!string.IsNullOrEmpty(lastName))
                 {
-                    Console.WriteLine("Are you sure you want to remove customer with ID {0}('yes' or 'no')?", id);
-                    string confirmation = Console.ReadLine();
-                    if (confirmation == "yes")
-                    {
-                        UseDB.DeleteCustomer(Int32.Parse(id));
-                        Console.Clear();
-                        customersUI.HeaderTitle = "Manage Customers";
-                        customersUI.DisplayScreen();
-                    }
-                    else if (confirmation == "no")
-                    {
-                        Console.Clear();
-                        customersUI.HeaderTitle = "Manage Customers";
-                        customersUI.DisplayScreen();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Try again.");
-                    }
+                    break;
                 }
+                else
+                {
+                    Console.WriteLine("Invalid Input. Try again.");
+                }
+            }
+            return new Customer(firstName, lastName);
+        }
+        public int RemoveCustomer()
+        {
+            string id;
+            int idInt;
+
+            while (true)
+            {
+                Console.WriteLine("Enter the ID of the Customer you wish to remove: ");
+                id = Console.ReadLine();
+                if (Int32.TryParse(id, out idInt))
+                {
+                    return idInt;
+                }
+                else { Console.WriteLine("Invalid Input. Try Again."); }
+
+            }
+        }
+        public bool ConfirmAdd(Customer cust)
+        {
+            while (true)
+            {
+                Console.WriteLine("Are you sure you want add {0} {1} as an Customer?", cust.FName, cust.LName);
+                UserInput = Console.ReadLine();
+                if (UserInput == "yes")
+                {
+                    return true;
+                }
+                else if (UserInput == "no")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                }
+            }
+        }
+        public bool ConfirmRemove(int custID)
+        {
+            while (true)
+            {
+                Console.WriteLine("Are you sure you want to remove the Customer with ID {0} ('yes' or 'no) ?", custID);
+                UserInput = Console.ReadLine();
+                if (UserInput == "yes")
+                {
+                    return true;
+                }
+                else if (UserInput == "no")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                }
+            }
+        }
+
+        public void DisplayCustomers()
+        {
+            var customers = UseDB.SelectCustomers();
+            Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Customer ID", "First Name", "Last Name");
+            foreach (Customer cust in customers)
+            {
+                Console.WriteLine("{0, -40} {1, -40} {2, -40}", cust.ID, cust.FName, cust.LName);
             }
         }
     }

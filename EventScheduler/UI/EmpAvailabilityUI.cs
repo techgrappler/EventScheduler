@@ -71,5 +71,6 @@ namespace EventScheduler.UI
                 Console.WriteLine("Remove Function Needs Written");
             }
         }
+
     }
 }
