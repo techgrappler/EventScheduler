@@ -19,7 +19,7 @@ namespace EventScheduler.UI
         {
             this.HeaderTitle = title;
         }
-       
+
         public new void DisplayScreen()
         {
             DisplayHeader();
@@ -36,7 +36,7 @@ namespace EventScheduler.UI
                 Console.WriteLine("{0, -20} {1, -30} {2, -40}", service.ID, service.Name, service.Description);
             }
         }
-        
+
         public override void DisplayFooter()
         {
             var options = new string[] {
@@ -80,102 +80,112 @@ namespace EventScheduler.UI
 
         public override void DisplayFooter(int option)
         {
-            ServicesUI servicesUI = new ServicesUI();
-            if (option == 1)
+            while (true)
             {
-                string serviceName;
-                string serviceDescription;
-
-                while (true)
+                if (option == 1)
                 {
-                    Console.WriteLine("Enter a name for the service you would like to add: ");
-                    serviceName = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(serviceName))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input. Try again.");
-                    }
-
+                    Service service = AddService();
+                    if (ConfirmAdd(service)) { UseDB.InsertService(service.Name, service.Description); }
+                    Console.Clear();
+                    this.DisplayScreen();
                 }
-                while (true)
+                else if (option == 2)
                 {
-                    Console.WriteLine("Enter a description: ");
-                    serviceDescription = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(serviceDescription))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Input. Try again.");
-                    }
-
-                }
-                while (true)
-                {
-                    Console.WriteLine("Are you sure you want to add the {0} service ('yes' or 'no')?", serviceName);
-                    string confirmation = Console.ReadLine();
-                    if (confirmation == "yes")
-                    {
-                        UseDB.InsertService(serviceName, serviceDescription);
-                        Console.Clear();
-                        servicesUI.HeaderTitle = "Manage Services";
-                        servicesUI.DisplayScreen();
-                    }
-                    else if (confirmation == "no")
-                    {
-                        Console.Clear();
-                        servicesUI.HeaderTitle = "Manage Services";
-                        servicesUI.DisplayScreen();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Try again.");
-                    }
+                    int serviceID = RemoveService();
+                    if (ConfirmRemove(serviceID)) { UseDB.DeleteService(serviceID); }
+                    Console.Clear();
+                    this.DisplayScreen();
                 }
             }
+        }
 
-            if (option == 2)
+        private Service AddService()
+        {
+            string serviceName;
+            string serviceDescription;
+            while (true)
             {
-
-                string id;
-                int idInt;
-
-                while (true)
+                Console.WriteLine("Enter the name of the Service you want to add: ");
+                serviceName = Console.ReadLine();
+                if (!string.IsNullOrEmpty(serviceName))
                 {
-                    Console.WriteLine("Enter the ID of the Service you wish to remove: ");
-                    id = Console.ReadLine();
-                    if (Int32.TryParse(id, out idInt))
-                    {
-                        break;
-                    }
-                    else { Console.WriteLine("Invalid Input. Try Again."); }
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input. Try again.");
                 }
 
-                while (true)
+            }
+            while (true)
+            {
+                Console.WriteLine("Enter a description for the service: ");
+                serviceDescription = Console.ReadLine();
+                if (!string.IsNullOrEmpty(serviceDescription))
                 {
-                    Console.WriteLine("Are you sure you want to remove the Service with ID {0}('yes' or 'no')?", id);
-                    string confirmation = Console.ReadLine();
-                    if (confirmation == "yes")
-                    {
-                        UseDB.DeleteService(Int32.Parse(id));
-                        Console.Clear();
-                        servicesUI.HeaderTitle = "Manage Services";
-                        servicesUI.DisplayScreen();
-                    }
-                    else if (confirmation == "no")
-                    {
-                        Console.Clear();
-                        servicesUI.HeaderTitle = "Manage Services";
-                        servicesUI.DisplayScreen();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Try again.");
-                    }
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input. Try again.");
+                }
+            }
+            return new Service(serviceName, serviceDescription);
+        }
+        private int RemoveService()
+        {
+            string id;
+            int idInt;
+
+            while (true)
+            {
+                Console.WriteLine("Enter the ID of the service you wish to remove: ");
+                id = Console.ReadLine();
+                if (Int32.TryParse(id, out idInt))
+                {
+                    return idInt;
+                }
+                else { Console.WriteLine("Invalid Input. Try Again."); }
+
+            }
+        }
+        private bool ConfirmAdd(Service service)
+        {
+            while (true)
+            {
+                Console.WriteLine("Are you sure you want add {0} as an service ('yes' or 'no')?", service.Name);
+                UserInput = Console.ReadLine();
+                if (UserInput == "yes")
+                {
+                    return true;
+                }
+                else if (UserInput == "no")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                }
+            }
+        }
+        private bool ConfirmRemove(int serviceID)
+        {
+            while (true)
+            {
+                Console.WriteLine("Are you sure you want to remove the service with ID {0} ('yes' or 'np) ?", serviceID);
+                UserInput = Console.ReadLine();
+                if (UserInput == "yes")
+                {
+                    return true;
+                }
+                else if (UserInput == "no")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Try again.");
                 }
             }
         }
