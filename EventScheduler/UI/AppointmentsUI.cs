@@ -43,19 +43,10 @@ namespace EventScheduler.UI
         }
         public override void DisplayFooter()
         {
-            var options = new string[] {
-                "View Appointments",
+            this.Options = new string[] {
                 "Book New Appointment"
             };
-
-            var count = 1;
-            foreach (string option in options)
-            {
-                Console.WriteLine("{0}. {1}", count, option);
-                count++;
-            }
-
-            Console.Write("Select from the options above (1-2): ");
+            this.DisplayOptions();
             this.UserInput = Console.ReadLine();
             if (UserInput == "main")
             {
@@ -69,14 +60,10 @@ namespace EventScheduler.UI
             }
             else if (UserInput == "1")
             {
-                Console.WriteLine("View Function Needs Written");
-            }
-            else if (UserInput == "2")
-            {
                 Console.Clear();
                 DisplayHeader();
-                DisplayBody(2);
-                DisplayFooter(2);
+                DisplayBody(1);
+                DisplayFooter(1);
             }
         }
 
@@ -88,7 +75,7 @@ namespace EventScheduler.UI
         {
             AppointmentsUI appointmentsUI = new AppointmentsUI();
 
-            if (option == 2)
+            if (option == 1)
             {
                 AddAppointment();
                 Console.Clear();

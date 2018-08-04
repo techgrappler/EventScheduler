@@ -16,7 +16,7 @@ namespace EventScheduler.Interfaces
 
         //Load UIs for each section of app
         AppointmentsUI appointmentsUI = new AppointmentsUI();
-        EmpAvailabilityUI availabilityUI = new EmpAvailabilityUI();
+        DailyAvailabilityUI availabilityUI = new DailyAvailabilityUI();
         EmployeesUI employeesUI = new EmployeesUI();
         ServicesUI servicesUI = new ServicesUI();
         CustomersUI customersUI = new CustomersUI();
@@ -69,31 +69,31 @@ namespace EventScheduler.Interfaces
             if (selection == "1")
             {
                 Console.Clear();
-                employeesUI.HeaderTitle = "Manage Employees";
+                employeesUI.HeaderTitle = "Employees";
                 employeesUI.DisplayScreen();
             }
             if (selection == "2")
             {
                 Console.Clear();
-                customersUI.HeaderTitle = "Manage Customers";
+                customersUI.HeaderTitle = "Customers";
                 customersUI.DisplayScreen();
             }
             if (selection == "3")
             {
                 Console.Clear();
-                servicesUI.HeaderTitle = "Manage Services Offered";
+                servicesUI.HeaderTitle = "Services and Products";
                 servicesUI.DisplayScreen();
             }
             else if (selection == "4")
             {
                 Console.Clear();
-                appointmentsUI.HeaderTitle = "Manage Appointments";
+                appointmentsUI.HeaderTitle = "Appointments";
                 appointmentsUI.DisplayScreen();
             }
             else if (selection == "5")
             {
                 Console.Clear();
-                availabilityUI.HeaderTitle = "Manage Availability";
+                availabilityUI.HeaderTitle = "Employee Availability";
                 availabilityUI.DisplayScreen();
             }
             else if (UserInput == "quit")

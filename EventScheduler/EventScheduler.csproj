@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Appointment.cs" />
+    <Compile Include="DailyAvailability.cs" />
     <Compile Include="DBClasses\UseDB.cs" />
     <Compile Include="EmpAvailability.cs" />
     <Compile Include="Customer.cs" />
@@ -67,7 +68,7 @@
     <Compile Include="Service.cs" />
     <Compile Include="TimeSlot.cs" />
     <Compile Include="UI\CustomersUI.cs" />
-    <Compile Include="UI\EmpAvailabilityUI.cs" />
+    <Compile Include="UI\DailyAvailabilityUI.cs" />
     <Compile Include="UI\EmployeesUI.cs" />
     <Compile Include="UI\AppointmentsUI.cs" />
     <Compile Include="UI\MainUI.cs" />

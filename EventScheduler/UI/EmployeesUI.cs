@@ -40,20 +40,12 @@ namespace EventScheduler.UI
 
         public override void DisplayFooter()
         {
-            var options = new string[] {
+            this.Options = new string[] {
                 "Add Employee",
                 "Remove Employee"
             };
+            this.DisplayOptions();
 
-            var count = 1;
-            foreach (string option in options)
-            {
-                Console.WriteLine("{0}. {1}", count, option);
-                count++;
-            }
-            Console.WriteLine("Type 'main' to return to main menu or 'quit' to exit the program.");
-
-            Console.Write("Select from the options above (1-2): ");
             this.UserInput = Console.ReadLine();
             if (UserInput == "main")
             {

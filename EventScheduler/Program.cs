@@ -42,6 +42,29 @@ namespace EventScheduler
 
             //Console.WriteLine("The input type is a: {0}", value);
             //Console.ReadLine();
+
+            ////INSERT Default Availability for All Employees
+            //DateTime start = new DateTime(2018, 1, 1, 8, 00, 0);
+            //DateTime end = new DateTime(2018, 1, 1, 17, 00, 0);
+            //DateTime sunStart = new DateTime(2018, 1, 1, 0, 0, 0);
+            //DateTime sunEnd = new DateTime(2018, 1, 1, 0, 0, 0);
+            //UseDB.ConnectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = " + "\"C:\\Users\\Samuel Fletcher\\source\\repos\\EventScheduler\\EventScheduler\\TestDB.mdf\"" + "; Integrated Security = True; Connect Timeout = 30";
+            //var employees = UseDB.SelectEmployees();
+            //foreach (Employee emp in employees)
+            //{
+            //    UseDB.InsertUpdateDailyAvailability("Monday", emp.ID, start, end);
+            //    UseDB.InsertUpdateDailyAvailability("Tuesday", emp.ID, start, end);
+            //    UseDB.InsertUpdateDailyAvailability("Wednesday", emp.ID, start, end);
+            //    UseDB.InsertUpdateDailyAvailability("Thursday", emp.ID, start, end);
+            //    UseDB.InsertUpdateDailyAvailability("Friday", emp.ID, start, end);
+            //    UseDB.InsertUpdateDailyAvailability("Saturday", emp.ID, start, end);
+            //    UseDB.InsertUpdateDailyAvailability("Sunday", emp.ID, sunStart, sunEnd);
+            //    UseDB.InsertUpdateDailyAvailability("DailyDefault", emp.ID, start, end);
+
+            //}
+
+
+            //Run the Event Scheduler app
             Console.SetWindowSize(200, 50);
             UseDB.ConnectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = " + "\"C:\\Users\\Samuel Fletcher\\source\\repos\\EventScheduler\\EventScheduler\\TestDB.mdf\"" + "; Integrated Security = True; Connect Timeout = 30";
             MainUI UI = new MainUI("Event Scheduler", "v1.0");

@@ -162,6 +162,48 @@ namespace EventScheduler.DBClasses
             return empAvailabilities;
         }
 
+        public static List<DailyAvailability> SelectDailyAvailabilities(string dayOfWeek)
+        {
+            var dailyAvailabilities = new List<DailyAvailability>();
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                //SqlCommand cmd = new SqlCommand("SELECT DailyAvailability.EmployeeID, Employees.FName, Employees.LName, DailyAvailability.DayOfWeek, DailyAvailability.StartTime, DailyAvailability.EndTime " +
+                //    "FROM DailyAvailability " +
+                //    "JOIN Employees ON Employees.EmployeeID = DailyAvailability.EmployeeID " +
+                //    "ORDER BY EmployeeID, (CASE  " +
+                //    "WHEN DayOfWeek = 'DailyDefault' THEN 0 " +
+                //    "WHEN DayOfWeek = 'Sunday' THEN 1 " +
+                //    "WHEN DayOfWeek = 'Monday' THEN 2 " +
+                //    "WHEN DayOfWeek = 'Tuesday' THEN 3 " +
+                //    "WHEN DayOfWeek = 'Wednesday' THEN 4 " +
+                //    "WHEN DayOfWeek = 'Thursday' THEN 5 " +
+                //    "WHEN DayOfWeek = 'Friday' THEN 6 " +
+                //    "WHEN DayOfWeek = 'Saturday' THEN 7 END)", connection);
+                SqlCommand cmd = new SqlCommand("SELECT DailyAvailability.EmployeeID, Employees.FName, Employees.LName, DailyAvailability.DayOfWeek, DailyAvailability.StartTime, DailyAvailability.EndTime FROM DailyAvailability JOIN Employees ON Employees.EmployeeID = DailyAvailability.EmployeeID WHERE DayOfWeek = @dayOfWeek", connection);
+                cmd.Parameters.AddWithValue("@dayOfWeek", dayOfWeek);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var dailyAvailability = new DailyAvailability();
+                        dailyAvailability.EmployeeID = reader.GetInt32(0);
+                        dailyAvailability.EmpFName = reader.GetString(1);
+                        dailyAvailability.EmpLName = reader.GetString(2);
+                        dailyAvailability.DayOfWeek = reader.GetString(3);
+                        dailyAvailability.StartTime = reader.GetTimeSpan(4);
+                        dailyAvailability.EndTime = reader.GetTimeSpan(5);
+
+                        dailyAvailabilities.Add(dailyAvailability);
+                    }
+                }
+
+            }
+            return dailyAvailabilities;
+        }
+
         public static void InsertEmployee(string firstName, string lastName)
         {
             using (var connection = new SqlConnection(ConnectionString))
@@ -232,6 +274,25 @@ namespace EventScheduler.DBClasses
                 int lastInsertedID = Convert.ToInt32(cmd.ExecuteScalar());
                 cmd.ExecuteNonQuery();
                 return lastInsertedID;
+            }
+        }
+
+        public static void InsertUpdateDailyAvailability(string dayOfWeek, int employeeID, DateTime startTime, DateTime endTime)
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand(
+                    "IF EXISTS (SELECT * From DailyAvailability WHERE DayOfWeek=@dayOfWeek AND EmployeeID=@employeeID) " +
+                    "UPDATE DailyAvailability SET StartTime=@startTime, EndTime=@endTime WHERE DayOfWeek=@dayOfWeek AND EmployeeID=@employeeID " +
+                    "ELSE INSERT INTO DailyAvailability(DayOfWeek, EmployeeID, StartTime, EndTime) VALUES(@dayOfWeek, @employeeID, @startTime, @endTime)  ", connection);
+                cmd.Parameters.AddWithValue("@dayOfWeek", dayOfWeek);
+                cmd.Parameters.AddWithValue("@employeeID", employeeID);
+                cmd.Parameters.AddWithValue("@startTime", startTime);
+                cmd.Parameters.AddWithValue("@endTime", endTime);
+
+                cmd.ExecuteNonQuery();
             }
         }
 

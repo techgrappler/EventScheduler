@@ -12,7 +12,7 @@ namespace EventScheduler.UI
     {
         public string UserInput { get; set;}
         public string HeaderTitle { get; set; }
-
+        public virtual string[] Options { get; set; }
         public virtual void DisplayScreen()
         {
             DisplayHeader();
@@ -79,6 +79,34 @@ namespace EventScheduler.UI
         {
             Console.WriteLine("Customized Footer Content Goes Here");
         }
+        public virtual void DisplayOptions()
+        {
+            var count = 1;
+            Console.WriteLine("***************************************");
+            Console.WriteLine("OPTIONS");
+            foreach (string option in Options)
+            {
+                Console.WriteLine("({0}) {1}", count, option);
+                count++;
+            }
+            count--;
+            if (count == 1)
+            {
 
+                Console.WriteLine("Type 'main' to return to main menu.");
+                Console.WriteLine("Type 'quit' to exit the program.");
+                Console.WriteLine("***************************************");
+                Console.Write("Select from the options above ({0}): ", count);
+
+            }
+            else
+            {
+                Console.WriteLine("Type 'main' to return to main menu.");
+                Console.WriteLine("Type 'quit' to exit the program.");
+                Console.WriteLine("***************************************");
+                Console.Write("Select from the options above (1-{0}): ", count);
+            }
+
+        }
     }
 }
