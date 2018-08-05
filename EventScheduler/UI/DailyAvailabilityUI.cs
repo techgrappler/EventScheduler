@@ -40,6 +40,16 @@ namespace EventScheduler.UI
 
 
             this.UserInput = Console.ReadLine();
+            while (true)
+            {
+                if (string.IsNullOrEmpty(UserInput))
+                {
+                    Console.Write("Invalid Input. Try Again: ");
+                    this.UserInput = Console.ReadLine();
+                }
+                else { break; }
+            }
+
             if (UserInput == "main")
             {
                 Console.Clear();
@@ -53,9 +63,11 @@ namespace EventScheduler.UI
             else if (UserInput == "1")
             {
                 this.SetAvailability();
+            } else
+            {
+                Console.WriteLine("Invalid Input. Try Again: ");
             }
         }
-
         public void DisplayEmpAvailability()
         {
 
@@ -69,7 +81,7 @@ namespace EventScheduler.UI
             var Saturday = UseDB.SelectDailyAvailabilities("Saturday");
 
             Console.WriteLine("{0, -15} {1, -15} {2, -15} {3, -15} {4, -15} {5, -15} {6, -15} {7, -15} {8, -15} {9, -15} {10, -15}", "Employee ID", "First Name", "Last Name", "DailyDefault", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-            for (int i = 0; i < Sunday.Count - 1; i++)
+            for (int i = 0; i < Sunday.Count; i++)
             {
                 int empID = DailyDefaults[i].EmployeeID;
                 string empFName = DailyDefaults[i].EmpFName;
@@ -229,7 +241,7 @@ namespace EventScheduler.UI
 
             }
 
-            UseDB.InsertUpdateDailyAvailability(dayOfWeek, employeeID, DateTime.Parse(startTime), DateTime.Parse(endTime));
+            UseDB.InsertUpdateDailyAvailability(dayOfWeek, employeeID, TimeSpan.Parse(startTime), TimeSpan.Parse(endTime));
             Console.Clear();
             this.DisplayScreen();
 

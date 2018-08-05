@@ -11,7 +11,6 @@ namespace EventScheduler.UI
 {
     public class CustomersUI : UserInterface
     {
-
         public CustomersUI()
         {
 
@@ -20,14 +19,12 @@ namespace EventScheduler.UI
         {
             this.HeaderTitle = title;
         }
-
         public override void DisplayScreen()
         {
             DisplayHeader();
             DisplayBody();
             DisplayFooter();
         }
-
         public override void DisplayBody()
         {
             var customers = UseDB.SelectCustomers();
@@ -42,7 +39,6 @@ namespace EventScheduler.UI
 
 
         }
-
         public override void DisplayFooter()
         {
             this.Options = new string[] {
@@ -52,6 +48,16 @@ namespace EventScheduler.UI
             this.DisplayOptions();
 
             this.UserInput = Console.ReadLine();
+            while (true)
+            {
+                if (string.IsNullOrEmpty(UserInput))
+                {
+                    Console.Write("Invalid Input. Try Again: ");
+                    this.UserInput = Console.ReadLine();
+                }
+                else { break; }
+            }
+
             if (UserInput == "main")
             {
                 Console.Clear();
@@ -64,15 +70,16 @@ namespace EventScheduler.UI
             }
             else if (UserInput == "1")
             {
-                DisplayHeader();
                 DisplayBody(1);
                 DisplayFooter(1);
             }
             else if (UserInput == "2")
             {
-                DisplayHeader();
                 DisplayBody(2);
                 DisplayFooter(2);
+            }
+            {
+                Console.WriteLine("Invalid Input. Try Again: ");
             }
         }
         public override void DisplayFooter(int option)
@@ -95,7 +102,6 @@ namespace EventScheduler.UI
                 }
             }
         }
-
         public Customer AddCustomer()
         {
             string firstName;
@@ -150,7 +156,7 @@ namespace EventScheduler.UI
         {
             while (true)
             {
-                Console.WriteLine("Are you sure you want add {0} {1} as an Customer?", cust.FName, cust.LName);
+                Console.WriteLine("Are you sure you want add {0} {1} as an Customer ('yes' or 'no')?", cust.FName, cust.LName);
                 UserInput = Console.ReadLine();
                 if (UserInput == "yes")
                 {
@@ -170,6 +176,7 @@ namespace EventScheduler.UI
         {
             while (true)
             {
+                Console.WriteLine("***Warning***\nRemoving this customer will remove all associated appointments!");
                 Console.WriteLine("Are you sure you want to remove the Customer with ID {0} ('yes' or 'no) ?", custID);
                 UserInput = Console.ReadLine();
                 if (UserInput == "yes")
@@ -186,14 +193,13 @@ namespace EventScheduler.UI
                 }
             }
         }
-
         public void DisplayCustomers()
         {
             var customers = UseDB.SelectCustomers();
-            Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Customer ID", "First Name", "Last Name");
+            Console.WriteLine("{0, -15} {1, -15} {2, -15}", "Customer ID", "First Name", "Last Name");
             foreach (Customer cust in customers)
             {
-                Console.WriteLine("{0, -40} {1, -40} {2, -40}", cust.ID, cust.FName, cust.LName);
+                Console.WriteLine("{0, -15} {1, -15} {2, -15}", cust.ID, cust.FName, cust.LName);
             }
         }
     }

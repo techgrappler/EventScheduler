@@ -20,26 +20,15 @@ namespace EventScheduler.UI
         {
             this.HeaderTitle = title;
         }
-
         public new void DisplayScreen()
         {
             DisplayHeader();
             DisplayBody();
             DisplayFooter();
         }
-
         public override void DisplayBody()
         {
-            var appointments = UseDB.SelectAppointments();
-
-            appointments.OrderBy(appointment => appointment.StartTime);
-            appointments.OrderBy(appointment => appointment.EmployeeID);
-            Console.WriteLine("There are {0} appointments", appointments.Count);
-            Console.WriteLine("{0, -30} {1, -30} {2, -30} {3, -30} {4, -30}", "Employee", "Service", "Customer", "Start Time", "End Time");
-            foreach (Appointment apt in appointments)
-            {
-                Console.WriteLine("{0, -30} {1, -30} {2, -30} {3, -30} {4, -30}", apt.EmployeeName, apt.ServiceName, apt.CustomerName, apt.StartTime, apt.EndTime);
-            }
+            DisplayAppointments();
         }
         public override void DisplayFooter()
         {
@@ -47,7 +36,18 @@ namespace EventScheduler.UI
                 "Book New Appointment"
             };
             this.DisplayOptions();
+
             this.UserInput = Console.ReadLine();
+            while (true)
+            {
+                if (string.IsNullOrEmpty(UserInput))
+                {
+                    Console.Write("Invalid Input. Try Again: ");
+                    this.UserInput = Console.ReadLine();
+                }
+                else { break; }
+            }
+
             if (UserInput == "main")
             {
                 Console.Clear();
@@ -64,9 +64,11 @@ namespace EventScheduler.UI
                 DisplayHeader();
                 DisplayBody(1);
                 DisplayFooter(1);
+            } else
+            {
+                Console.WriteLine("Invalid Input. Tray Again: ");
             }
         }
-
         public override void DisplayBody(int option)
         {
 
@@ -82,8 +84,20 @@ namespace EventScheduler.UI
                 this.DisplayScreen();
             }
         }
+        public void DisplayAppointments()
+        {
+            var appointments = UseDB.SelectAppointments();
 
-        private Appointment AddAppointment()
+            appointments.OrderBy(appointment => appointment.StartTime);
+            appointments.OrderBy(appointment => appointment.EmployeeID);
+            Console.WriteLine("There are {0} appointments", appointments.Count);
+            Console.WriteLine("{0, -30} {1, -15} {2, -30} {3, -30} {4, -30}", "Employee", "Service", "Customer", "Start Time", "End Time");
+            foreach (Appointment apt in appointments)
+            {
+                Console.WriteLine("{0, -30} {1, -15} {2, -30} {3, -30} {4, -30}", apt.EmployeeName, apt.ServiceName, apt.CustomerName, apt.StartTime, apt.EndTime);
+            }
+        }
+        private void AddAppointment()
         {
 
             int serviceID;
@@ -98,57 +112,11 @@ namespace EventScheduler.UI
             EmployeesUI employeesUI = new EmployeesUI();
             CustomersUI customersUI = new CustomersUI();
 
-            //Get customer for appointment
-            customersUI.DisplayCustomers();
-            while (true)
-            {
-                Console.WriteLine("Which customer is the appointment for (enter ID or type 'new' for new customer)?: ");
-                UserInput = Console.ReadLine();
-                if (Int32.TryParse(UserInput, out customerID))
-                {
-                    break;
-                }
-                else if (UserInput == "new")
-                { 
-                    Customer cust = customersUI.AddCustomer();
-                    customerID = UseDB.InsertCustomer(cust.FName, cust.LName);
-                    break;
-                }
-                else
-                { Console.WriteLine("Invalid Input. Try again."); }
-            }
-
-            //Get service to be scheduled
-            servicesUI.DisplayServices();
-            while (true)
-            {
-                Console.WriteLine("Enter the ID of the service you would like to schedule: ");
-                UserInput = Console.ReadLine();
-                if (Int32.TryParse(UserInput, out serviceID))
-                {
-                    break;
-                }
-                else { Console.WriteLine("Invalid Input. Try again."); }
-            }
-
-            //Get employee for appointment
-            employeesUI.DisplayEmployees();
-            while (true)
-            {
-                Console.WriteLine("Enter the ID of the employee that will perform the service: ");
-                UserInput = Console.ReadLine();
-                if (Int32.TryParse(UserInput, out employeeID))
-                {
-                    break;
-                }
-                else { Console.WriteLine("Invalid Input. Try again."); }
-            }
-
             //Get time for appointment
             while (true)
             {
                 string pattern = @"\d{1,2}\/\d{1,2}\/\d{4}";
-                Console.WriteLine("Enter a date for the appointment using the format 'mm/dd/yyyy': ");
+                Console.WriteLine("What day would you like to book the appointment for? ('mm/dd/yyyy'): ");
                 dateString = Console.ReadLine();
                 if (Regex.IsMatch(dateString, pattern) && DateTime.TryParse(dateString, out date))
                 {
@@ -163,7 +131,7 @@ namespace EventScheduler.UI
             {
                 string pattern = @"\d{1,2}\:\d{1,2}";
 
-                Console.WriteLine("Enter a time for the appointment using the format 'hh:mm':");
+                Console.WriteLine("What time would you like the appointment to start? ('hh:mm'):");
                 hoursMinutes = Console.ReadLine();
                 if (Regex.IsMatch(hoursMinutes, pattern))
                 {
@@ -204,8 +172,8 @@ namespace EventScheduler.UI
             while (true)
             {
                 string pattern = @"\d{1,2}\:\d{1,2}";
-
-                Console.WriteLine("Enter a duration for the appointment using the format 'hh:mm':");
+                string error = "Invalid Input. Try Again.";
+                Console.WriteLine("How long would you like the appointment to last? ('hh:mm'):");
                 hoursMinutes = Console.ReadLine();
                 if (Regex.IsMatch(hoursMinutes, pattern))
                 {
@@ -232,33 +200,120 @@ namespace EventScheduler.UI
                         {
                             mmInt = 45;
                         }
+                        TimeSpan hhmm = new TimeSpan(hhInt, mmInt, 0);
+                        endTime = startTime + hhmm;
+                        break;
                     }
-                    TimeSpan hhmm = new TimeSpan(hhInt, mmInt, 0);
-                    endTime = startTime + hhmm;
-                    break;
+
                 }
                 else
                 {
-                    Console.WriteLine("Invalid Input. Try Again.");
+                    Console.WriteLine("{0}", error);
                 }
             }
 
-            //Add the new appointment to the database
-            UseDB.InsertAppointment(customerID, serviceID, employeeID, startTime, endTime);
-
-            //Set the employee's availability to 'booked' for the time period covered by the appointment 
-            DateTime time = new DateTime();
-            TimeSpan timeSpan = new TimeSpan(0, 15, 0);
-            for (time = startTime; time <= endTime; time = time + timeSpan)
+            //Get service to be scheduled
+            servicesUI.DisplayServices();
+            while (true)
             {
-                UseDB.InsertUpdateEmpAvailability(employeeID, time, 0, 1);
+                Console.WriteLine("Enter the ID of the service you would like to schedule: ");
+                UserInput = Console.ReadLine();
+                if (Int32.TryParse(UserInput, out serviceID))
+                {
+                    break;
+                }
+                else { Console.WriteLine("Invalid Input. Try again."); }
             }
 
-            //Reset the user interface to view all appointments
-            Console.Clear();
-            this.DisplayScreen();
+            //Get list of all employees
+            var employees = UseDB.SelectEmployees();
+            var emp = new EmpAvailability();
+            
 
-            return new Appointment(customerID, serviceID, employeeID, startTime, endTime);
+            //Remove any employee from list that is unavailable
+            foreach (Employee employee in employees.ToList())
+            {
+                var apts = UseDB.SelectAppointments(employee.ID);
+                foreach(Appointment apt in apts)
+                {
+                    if (!emp.IsEmployeeAvailable(employee.ID, apt.StartTime, apt.EndTime))
+                    {
+                        employees.Remove(employee);
+                        //Console.WriteLine("In the loop");
+                        //Console.Read();
+                    }
+                }
+                //Console.WriteLine("We are in the loop");
+                //Console.ReadLine();
+                if(!emp.IsEmployeeAvailable(employee.ID, startTime, endTime))
+                {
+                    employees.Remove(employee);
+                }
+
+
+            }
+            //If there are not available employees, start booking process over.
+            if (!employees.Any())
+            {
+                Console.WriteLine("No employees are available to perform that service on that day and time. Press enter to try again.");
+                Console.Read();
+                Console.Clear();
+                this.DisplayScreen();
+            }
+            else
+            {
+                //Otherwise, list all available employees that can performt the service
+                Console.WriteLine("The following employees are available during that timeframe: ");
+                employeesUI.DisplayEmployees(employees);
+                while (true)
+                {
+                    Console.WriteLine("Which employee would you like to perform at the appointment? Enter ID number: ");
+                    UserInput = Console.ReadLine();
+                    if (Int32.TryParse(UserInput, out employeeID))
+                    {
+                        break;
+                    }
+                    else { Console.WriteLine("Invalid Input. Try again."); }
+                }
+
+                //Get customer for appointment
+                customersUI.DisplayCustomers();
+                while (true)
+                {
+                    Console.WriteLine("Which customer is the appointment for (enter ID or type 'new' for new customer)?: ");
+                    UserInput = Console.ReadLine();
+                    if (Int32.TryParse(UserInput, out customerID))
+                    {
+                        break;
+                    }
+                    else if (UserInput == "new")
+                    {
+                        Customer cust = customersUI.AddCustomer();
+                        customerID = UseDB.InsertCustomer(cust.FName, cust.LName);
+                        break;
+                    }
+                    else
+                    { Console.WriteLine("Invalid Input. Try again."); }
+                }
+
+                //Add the new appointment to the database
+                UseDB.InsertAppointment(customerID, serviceID, employeeID, startTime, endTime);
+
+                //Set the employee's availability to 'booked' for the time period covered by the appointment 
+                DateTime time = new DateTime();
+                TimeSpan timeSpan = new TimeSpan(0, 15, 0);
+                for (time = startTime; time <= endTime; time = time + timeSpan)
+                {
+                    UseDB.InsertUpdateEmpAvailability(employeeID, time, 0, 1);
+                }
+
+                //Reset the user interface to view all appointments
+                Console.Clear();
+                this.DisplayScreen();
+
+               // return new Appointment(customerID, serviceID, employeeID, startTime, endTime);
+            }
+
         }
     }
 }

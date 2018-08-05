@@ -13,6 +13,16 @@ namespace EventScheduler.UI
         public string UserInput { get; set;}
         public string HeaderTitle { get; set; }
         public virtual string[] Options { get; set; }
+        public string Border { get; set; }
+        public UserInterface()
+        {
+           
+            for (int i = 0; i < 198; i++)
+            {
+                this.Border += "*";
+            }
+         
+        }
         public virtual void DisplayScreen()
         {
             DisplayHeader();
@@ -29,24 +39,11 @@ namespace EventScheduler.UI
         {
             this.UserInput = Console.ReadLine();
         }
-
         public virtual void DisplayHeader()
         {
-            Console.Write("**********");
-            for (int i = 0; i < HeaderTitle.Length - 1; i++)
-            {
-                Console.Write("*");
-            }
-            Console.Write("**********");
-            Console.WriteLine();
-            Console.WriteLine("*        {0}         *", HeaderTitle);
-            Console.Write("**********");
-            for (int i = 0; i < HeaderTitle.Length - 1; i++)
-            {
-                Console.Write("*");
-            }
-            Console.Write("**********");
-            Console.WriteLine();
+            Console.WriteLine("{0}", Border);
+            Console.WriteLine("{0}", HeaderTitle);
+            Console.WriteLine("{0}", Border);
         }
         public virtual void DisplayBody()
         {
@@ -66,7 +63,6 @@ namespace EventScheduler.UI
                 Environment.Exit(0);
             }
         }
-
         public virtual void DisplayHeader(int option)
         {
             Console.WriteLine("Customized Header Content Goes Here");
@@ -82,7 +78,7 @@ namespace EventScheduler.UI
         public virtual void DisplayOptions()
         {
             var count = 1;
-            Console.WriteLine("***************************************");
+            Console.WriteLine("{0}", Border);
             Console.WriteLine("OPTIONS");
             foreach (string option in Options)
             {
@@ -95,7 +91,7 @@ namespace EventScheduler.UI
 
                 Console.WriteLine("Type 'main' to return to main menu.");
                 Console.WriteLine("Type 'quit' to exit the program.");
-                Console.WriteLine("***************************************");
+                Console.WriteLine("{0}", Border);
                 Console.Write("Select from the options above ({0}): ", count);
 
             }
@@ -103,7 +99,7 @@ namespace EventScheduler.UI
             {
                 Console.WriteLine("Type 'main' to return to main menu.");
                 Console.WriteLine("Type 'quit' to exit the program.");
-                Console.WriteLine("***************************************");
+                Console.WriteLine("{0}", Border);
                 Console.Write("Select from the options above (1-{0}): ", count);
             }
 

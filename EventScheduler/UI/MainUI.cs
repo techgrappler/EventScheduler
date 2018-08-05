@@ -33,12 +33,10 @@ namespace EventScheduler.Interfaces
             DisplayBody();
             DisplayFooter();
         }
-
         new void GetInput()
         {
             this.UserInput = Console.ReadLine();
         }
-
         new void DisplayBody()
         {
 
@@ -59,38 +57,47 @@ namespace EventScheduler.Interfaces
             }
             Console.WriteLine("Type 'quit' to exit the program.");
         }
-
         new void DisplayFooter()
         {
             Console.Write("Select from the options above (1-5): ");
             this.UserInput = Console.ReadLine();
-            string selection = this.UserInput;
+           
+            while (true)
+            {
+                if (string.IsNullOrEmpty(UserInput))
+                {
+                    Console.Write("Invalid Input. Try Again: ");
+                    this.UserInput = Console.ReadLine();
+                }
+                else { break; }
+            }
 
-            if (selection == "1")
+
+            if (UserInput == "1")
             {
                 Console.Clear();
                 employeesUI.HeaderTitle = "Employees";
                 employeesUI.DisplayScreen();
             }
-            if (selection == "2")
+            if (UserInput == "2")
             {
                 Console.Clear();
                 customersUI.HeaderTitle = "Customers";
                 customersUI.DisplayScreen();
             }
-            if (selection == "3")
+            if (UserInput == "3")
             {
                 Console.Clear();
                 servicesUI.HeaderTitle = "Services and Products";
                 servicesUI.DisplayScreen();
             }
-            else if (selection == "4")
+            else if (UserInput == "4")
             {
                 Console.Clear();
                 appointmentsUI.HeaderTitle = "Appointments";
                 appointmentsUI.DisplayScreen();
             }
-            else if (selection == "5")
+            else if (UserInput == "5")
             {
                 Console.Clear();
                 availabilityUI.HeaderTitle = "Employee Availability";
@@ -99,6 +106,10 @@ namespace EventScheduler.Interfaces
             else if (UserInput == "quit")
             {
                 Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine("Invalid Input.Try Again: ");
             }
         }
     }

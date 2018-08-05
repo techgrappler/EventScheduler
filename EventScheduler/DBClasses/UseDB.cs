@@ -109,7 +109,56 @@ namespace EventScheduler.DBClasses
             }
             return appointments;
         }
+        
+        public static List<Appointment> SelectAppointments(int empID)
+        {
 
+            var appointments = new List<Appointment>();
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT Appointments.AppointmentID," +
+                    " Appointments.CustomerID" +
+                    ", Appointments.ServiceID," +
+                    " Appointments.EmployeeID," +
+                    " Appointments.StartTime," +
+                    " Appointments.EndTime," +
+                    " Customers.FName," +
+                    " Customers.LName," +
+                    " Services.ServiceName," +
+                    " Employees.FName," +
+                    " Employees.LName " +
+                    "FROM Appointments " +
+                    "JOIN Customers ON Appointments.CustomerID = Customers.CustomerID " +
+                    "JOIN Employees ON Appointments.EmployeeID = Employees.EmployeeID " +
+                    "JOIN Services ON Appointments.ServiceID = Services.ServiceID " +
+                    "WHERE Appointments.EmployeeID=@empID " +
+                    "ORDER BY Appointments.AppointmentID, Appointments.StartTime", connection);
+
+                cmd.Parameters.AddWithValue("@empID", empID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var apt = new Appointment();
+                        apt.ID = reader.GetInt32(0);
+                        apt.CustomerID = reader.GetInt32(1);
+                        apt.ServiceID = reader.GetInt32(2);
+                        apt.EmployeeID = reader.GetInt32(3);
+                        apt.StartTime = reader.GetDateTime(4);
+                        apt.EndTime = reader.GetDateTime(5);
+                        apt.CustomerName = reader.GetString(6).TrimEnd() + " " + reader.GetString(7).TrimEnd();
+                        apt.ServiceName = reader.GetString(8).TrimEnd();
+                        apt.EmployeeName = reader.GetString(9).TrimEnd() + " " + reader.GetString(10).TrimEnd();
+                        appointments.Add(apt);
+                    }
+                }
+
+            }
+            return appointments;
+        }
         public static List<Customer> SelectCustomers()
         {
 
@@ -163,6 +212,8 @@ namespace EventScheduler.DBClasses
         }
 
         public static List<DailyAvailability> SelectDailyAvailabilities(string dayOfWeek)
+
+
         {
             var dailyAvailabilities = new List<DailyAvailability>();
             using (var connection = new SqlConnection(ConnectionString))
@@ -204,7 +255,37 @@ namespace EventScheduler.DBClasses
             return dailyAvailabilities;
         }
 
-        public static void InsertEmployee(string firstName, string lastName)
+        public static DailyAvailability SelectDailyAvailabily(int empID, string dayOfWeek)
+        {
+            var dailyAvailability = new DailyAvailability();
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT DailyAvailability.EmployeeID, Employees.FName, Employees.LName, DailyAvailability.DayOfWeek, DailyAvailability.StartTime, DailyAvailability.EndTime FROM DailyAvailability JOIN Employees ON Employees.EmployeeID = DailyAvailability.EmployeeID WHERE DailyAvailability.EmployeeID=@empID AND DayOfWeek = @dayOfWeek ", connection);
+                cmd.Parameters.AddWithValue("@dayOfWeek", dayOfWeek);
+                cmd.Parameters.AddWithValue("@empID", empID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                       
+                        dailyAvailability.EmployeeID = reader.GetInt32(0);
+                        dailyAvailability.EmpFName = reader.GetString(1);
+                        dailyAvailability.EmpLName = reader.GetString(2);
+                        dailyAvailability.DayOfWeek = reader.GetString(3);
+                        dailyAvailability.StartTime = reader.GetTimeSpan(4);
+                        dailyAvailability.EndTime = reader.GetTimeSpan(5);
+                    }
+                }
+
+            }
+            return dailyAvailability;
+        }
+
+
+        public static int InsertEmployee(string firstName, string lastName)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -212,7 +293,9 @@ namespace EventScheduler.DBClasses
                 SqlCommand cmd = new SqlCommand("INSERT INTO Employees (FName, LName) VALUES (@firstName, @lastName) ", connection);
                 cmd.Parameters.AddWithValue("@firstName", firstName);
                 cmd.Parameters.AddWithValue("@lastName", lastName);
-                cmd.ExecuteNonQuery();
+                int lastInsertedID = Convert.ToInt32(cmd.ExecuteScalar());
+                return lastInsertedID;
+                //cmd.ExecuteNonQuery();
             }
         }
 
@@ -268,16 +351,16 @@ namespace EventScheduler.DBClasses
             using (var connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO Customers (FName, LName) VALUES (@firstName, @lastName); SELECT SCOPE_IDENTITY()", connection);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Customers (FName, LName) VALUES (@firstName, @lastName)", connection);
                 cmd.Parameters.AddWithValue("@firstName", firstName);
                 cmd.Parameters.AddWithValue("@lastName", lastName);
                 int lastInsertedID = Convert.ToInt32(cmd.ExecuteScalar());
-                cmd.ExecuteNonQuery();
+                //cmd.ExecuteNonQuery();
                 return lastInsertedID;
             }
         }
 
-        public static void InsertUpdateDailyAvailability(string dayOfWeek, int employeeID, DateTime startTime, DateTime endTime)
+        public static void InsertUpdateDailyAvailability(string dayOfWeek, int employeeID, TimeSpan startTime, TimeSpan endTime)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -336,6 +419,17 @@ namespace EventScheduler.DBClasses
                 connection.Open();
                 SqlCommand cmd = new SqlCommand("DELETE FROM Customers WHERE CustomerID=@customerID", connection);
                 cmd.Parameters.AddWithValue("@customerID", customerID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void DeleteDailyAvailability(int employeeID)
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("DELETE FROM DailyAvailability WHERE EmployeeID=@employeeID", connection);
+                cmd.Parameters.AddWithValue("@employeeID", employeeID);
                 cmd.ExecuteNonQuery();
             }
         }

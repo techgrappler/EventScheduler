@@ -26,12 +26,14 @@ namespace EventScheduler.UI
             DisplayBody();
             DisplayFooter();
         }
-
         public override void DisplayBody()
         {
             this.DisplayServices();
         }
+        public override void DisplayBody(int option)
+        {
 
+        }
         public override void DisplayFooter()
         {
             this.Options = new string[] {
@@ -41,6 +43,16 @@ namespace EventScheduler.UI
             this.DisplayOptions();
 
             this.UserInput = Console.ReadLine();
+            while(true)
+            {
+                if (string.IsNullOrEmpty(UserInput))
+                {
+                    Console.Write("Invalid Input. Try Again: ");
+                    this.UserInput = Console.ReadLine();
+                }
+                else { break; }
+            }
+           
             if (UserInput == "main")
             {
                 Console.Clear();
@@ -53,18 +65,19 @@ namespace EventScheduler.UI
             }
             else if (UserInput == "1")
             {
-                DisplayHeader();
                 DisplayBody(1);
                 DisplayFooter(1);
             }
             else if (UserInput == "2")
             {
-                DisplayHeader();
                 DisplayBody(2);
                 DisplayFooter(2);
             }
+            else
+            {
+                Console.WriteLine("Invalid Input. Try Again.");
+            }
         }
-
         public override void DisplayFooter(int option)
         {
             while (true)
@@ -85,7 +98,6 @@ namespace EventScheduler.UI
                 }
             }
         }
-
         private Service AddService()
         {
             string serviceName;
@@ -160,6 +172,7 @@ namespace EventScheduler.UI
         {
             while (true)
             {
+                Console.WriteLine("***Warning***\nRemoving this service will remove all associated appointments!");
                 Console.WriteLine("Are you sure you want to remove the service with ID {0} ('yes' or 'no) ?", serviceID);
                 UserInput = Console.ReadLine();
                 if (UserInput == "yes")
@@ -179,10 +192,10 @@ namespace EventScheduler.UI
         public void DisplayServices()
         {
             var services = UseDB.SelectServices();
-            Console.WriteLine("{0, -40} {1, -40} {2, -40}", "Service ID", "Service Name", "Description");
+            Console.WriteLine("{0, -15} {1, -30} {2, -30}", "Service ID", "Service Name", "Description");
             foreach (Service service in services)
             {
-                Console.WriteLine("{0, -40} {1, -40} {2, -40}", service.ID, service.Name, service.Description);
+                Console.WriteLine("{0, -15} {1, -30} {2, -30}", service.ID, service.Name, service.Description);
             }
         }
     }
