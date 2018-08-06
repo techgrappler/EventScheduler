@@ -41,42 +41,45 @@ namespace EventScheduler.UI
                 "Remove Service"
             };
             this.DisplayOptions();
-
-            this.UserInput = Console.ReadLine();
             while(true)
             {
-                if (string.IsNullOrEmpty(UserInput))
+                this.UserInput = Console.ReadLine();
+                while (true)
                 {
-                    Console.Write("Invalid Input. Try Again: ");
-                    this.UserInput = Console.ReadLine();
+                    if (string.IsNullOrEmpty(UserInput))
+                    {
+                        Console.Write("Invalid Input. Try Again: ");
+                        this.UserInput = Console.ReadLine();
+                    }
+                    else { break; }
                 }
-                else { break; }
+
+                if (UserInput == "main")
+                {
+                    Console.Clear();
+                    MainUI UI = new MainUI("Event Scheduler", "v1.0");
+                    UI.DisplayScreen();
+                }
+                else if (UserInput == "quit")
+                {
+                    Environment.Exit(0);
+                }
+                else if (UserInput == "1")
+                {
+                    DisplayBody(1);
+                    DisplayFooter(1);
+                }
+                else if (UserInput == "2")
+                {
+                    DisplayBody(2);
+                    DisplayFooter(2);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input. Try Again.");
+                }
             }
-           
-            if (UserInput == "main")
-            {
-                Console.Clear();
-                MainUI UI = new MainUI("Event Scheduler", "v1.0");
-                UI.DisplayScreen();
-            }
-            else if (UserInput == "quit")
-            {
-                Environment.Exit(0);
-            }
-            else if (UserInput == "1")
-            {
-                DisplayBody(1);
-                DisplayFooter(1);
-            }
-            else if (UserInput == "2")
-            {
-                DisplayBody(2);
-                DisplayFooter(2);
-            }
-            else
-            {
-                Console.WriteLine("Invalid Input. Try Again.");
-            }
+            
         }
         public override void DisplayFooter(int option)
         {

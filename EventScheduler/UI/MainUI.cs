@@ -60,56 +60,59 @@ namespace EventScheduler.Interfaces
         new void DisplayFooter()
         {
             Console.Write("Select from the options above (1-5): ");
-            this.UserInput = Console.ReadLine();
-           
-            while (true)
+            while(true)
             {
-                if (string.IsNullOrEmpty(UserInput))
+
+                this.UserInput = Console.ReadLine();
+                while (true)
                 {
-                    Console.Write("Invalid Input. Try Again: ");
-                    this.UserInput = Console.ReadLine();
+                    if (string.IsNullOrEmpty(UserInput))
+                    {
+                        Console.Write("Invalid Input. Try Again: ");
+                        this.UserInput = Console.ReadLine();
+                    }
+                    else { break; }
                 }
-                else { break; }
-            }
 
 
-            if (UserInput == "1")
-            {
-                Console.Clear();
-                employeesUI.HeaderTitle = "Employees";
-                employeesUI.DisplayScreen();
-            }
-            if (UserInput == "2")
-            {
-                Console.Clear();
-                customersUI.HeaderTitle = "Customers";
-                customersUI.DisplayScreen();
-            }
-            if (UserInput == "3")
-            {
-                Console.Clear();
-                servicesUI.HeaderTitle = "Services and Products";
-                servicesUI.DisplayScreen();
-            }
-            else if (UserInput == "4")
-            {
-                Console.Clear();
-                appointmentsUI.HeaderTitle = "Appointments";
-                appointmentsUI.DisplayScreen();
-            }
-            else if (UserInput == "5")
-            {
-                Console.Clear();
-                availabilityUI.HeaderTitle = "Employee Availability";
-                availabilityUI.DisplayScreen();
-            }
-            else if (UserInput == "quit")
-            {
-                Environment.Exit(0);
-            }
-            else
-            {
-                Console.WriteLine("Invalid Input.Try Again: ");
+                if (UserInput == "1")
+                {
+                    Console.Clear();
+                    employeesUI.HeaderTitle = "Employees";
+                    employeesUI.DisplayScreen();
+                }
+                if (UserInput == "2")
+                {
+                    Console.Clear();
+                    customersUI.HeaderTitle = "Customers";
+                    customersUI.DisplayScreen();
+                }
+                if (UserInput == "3")
+                {
+                    Console.Clear();
+                    servicesUI.HeaderTitle = "Services and Products";
+                    servicesUI.DisplayScreen();
+                }
+                else if (UserInput == "4")
+                {
+                    Console.Clear();
+                    appointmentsUI.HeaderTitle = "Appointments";
+                    appointmentsUI.DisplayScreen();
+                }
+                else if (UserInput == "5")
+                {
+                    Console.Clear();
+                    availabilityUI.HeaderTitle = "Employee Availability";
+                    availabilityUI.DisplayScreen();
+                }
+                else if (UserInput == "quit")
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input.Try Again: ");
+                }
             }
         }
     }
