@@ -13,5 +13,7 @@ namespace EventScheduler
         public string FName { get; set; }
         public string LName { get; set; }
         public int ID { get; set; }
+
     }
+
 }

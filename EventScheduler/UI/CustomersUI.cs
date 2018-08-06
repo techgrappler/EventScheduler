@@ -142,13 +142,19 @@ namespace EventScheduler.UI
 
             while (true)
             {
+                var cust = new Customer();
                 Console.WriteLine("Enter the ID of the Customer you wish to remove: ");
                 id = Console.ReadLine();
                 if (Int32.TryParse(id, out idInt))
                 {
-                    return idInt;
+                    if(cust.IsAny(idInt))
+                    {
+                        return idInt;
+                    }
+                    else { Console.WriteLine("That customer ID is not in the system. Try again."); }
+                    
                 }
-                else { Console.WriteLine("Invalid Input. Try Again."); }
+                else { Console.WriteLine("Invalid input or that cust ID does not exist in the system. Try Again."); }
 
             }
         }

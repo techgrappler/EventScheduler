@@ -59,10 +59,12 @@
   <ItemGroup>
     <Compile Include="Appointment.cs" />
     <Compile Include="DailyAvailability.cs" />
+    <Compile Include="DBClasses\DBItem.cs" />
     <Compile Include="DBClasses\UseDB.cs" />
     <Compile Include="EmpAvailability.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="Interfaces\IDBItem.cs" />
     <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Interfaces\IUserInterface.cs" />
     <Compile Include="Service.cs" />

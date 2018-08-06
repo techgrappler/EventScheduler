@@ -35,6 +35,30 @@ namespace EventScheduler.DBClasses
             return employees;
         }
 
+        public static List<Employee> SelectEmployee(int empID)
+        {
+
+            var employees = new List<Employee>();
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Employees WHERE EmployeeID=@empID", connection);
+                cmd.Parameters.AddWithValue("@empID", empID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var emp = new Employee(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+                        employees.Add(emp);
+                    }
+                }
+
+            }
+            return employees;
+        }
+
         public static List<Service> SelectServices()
         {
 
@@ -59,6 +83,86 @@ namespace EventScheduler.DBClasses
 
             }
             return services;
+        }
+
+        public static List<Service> SelectService(int serviceID)
+        {
+
+            var services = new List<Service>();
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Services WHERE ServiceID=@serviceID", connection);
+                cmd.Parameters.AddWithValue("@serviceID", serviceID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var service = new Service();
+                        service.ID = reader.GetInt32(0);
+                        service.Name = reader.GetString(1);
+                        service.Description = reader.GetString(2);
+                        services.Add(service);
+                    }
+                }
+
+            }
+            return services;
+        }
+
+        public static List<Customer> SelectCustomers()
+        {
+
+            var customers = new List<Customer>();
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Customers", connection);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var cust = new Customer();
+                        cust.ID = reader.GetInt32(0);
+                        cust.FName = reader.GetString(1);
+                        cust.LName = reader.GetString(2);
+                        customers.Add(cust);
+                    }
+                }
+
+            }
+            return customers;
+        }
+
+        public static List<Customer> SelectCustomer(int custID)
+        {
+
+            var customers = new List<Customer>();
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Customers WHERE CustomerID=@custID", connection);
+                cmd.Parameters.AddWithValue("@custID", custID);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var cust = new Customer();
+                        cust.ID = reader.GetInt32(0);
+                        cust.FName = reader.GetString(1);
+                        cust.LName = reader.GetString(2);
+                        customers.Add(cust);
+                    }
+                }
+
+            }
+            return customers;
         }
 
         public static List<Appointment> SelectAppointments()
@@ -159,31 +263,7 @@ namespace EventScheduler.DBClasses
             }
             return appointments;
         }
-        public static List<Customer> SelectCustomers()
-        {
-
-            var customers = new List<Customer>();
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Customers", connection);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        var cust = new Customer();
-                        cust.ID = reader.GetInt32(0);
-                        cust.FName = reader.GetString(1);
-                        cust.LName = reader.GetString(2);
-                        customers.Add(cust);
-                    }
-                }
-
-            }
-            return customers;
-        }
+        
 
         public static List<EmpAvailability> SelectEmpAvailabilities()
         {

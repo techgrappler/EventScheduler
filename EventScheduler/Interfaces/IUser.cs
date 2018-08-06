@@ -13,5 +13,7 @@ namespace EventScheduler.Interfaces
         string FName { get; set; }
         string LName { get; set; }
         int ID { get; set; }
+        
     }
 }
+    

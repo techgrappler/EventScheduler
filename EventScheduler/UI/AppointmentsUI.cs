@@ -91,10 +91,10 @@ namespace EventScheduler.UI
             appointments.OrderBy(appointment => appointment.StartTime);
             appointments.OrderBy(appointment => appointment.EmployeeID);
             Console.WriteLine("There are {0} appointments", appointments.Count);
-            Console.WriteLine("{0, -30} {1, -15} {2, -30} {3, -30} {4, -30}", "Employee", "Service", "Customer", "Start Time", "End Time");
+            Console.WriteLine("{0, -30} {1, -25} {2, -30} {3, -30} {4, -30}", "Employee", "Service", "Customer", "Start Time", "End Time");
             foreach (Appointment apt in appointments)
             {
-                Console.WriteLine("{0, -30} {1, -15} {2, -30} {3, -30} {4, -30}", apt.EmployeeName, apt.ServiceName, apt.CustomerName, apt.StartTime, apt.EndTime);
+                Console.WriteLine("{0, -30} {1, -25} {2, -30} {3, -30} {4, -30}", apt.EmployeeName, apt.ServiceName, apt.CustomerName, apt.StartTime, apt.EndTime);
             }
         }
         private void AddAppointment()
@@ -113,62 +113,75 @@ namespace EventScheduler.UI
             CustomersUI customersUI = new CustomersUI();
 
             //Get time for appointment
+
             while (true)
             {
-                string pattern = @"\d{1,2}\/\d{1,2}\/\d{4}";
-                Console.WriteLine("What day would you like to book the appointment for? ('mm/dd/yyyy'): ");
-                dateString = Console.ReadLine();
-                if (Regex.IsMatch(dateString, pattern) && DateTime.TryParse(dateString, out date))
+                while (true)
+                {
+                    string pattern = @"\d{1,2}\/\d{1,2}\/\d{4}";
+                    Console.WriteLine("What day would you like to book the appointment for? ('mm/dd/yyyy'): ");
+                    dateString = Console.ReadLine();
+                    if (Regex.IsMatch(dateString, pattern) && DateTime.TryParse(dateString, out date))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Input. Try again.");
+                    }
+                }
+
+                while (true)
+                {
+                    string pattern = @"\d{1,2}\:\d{1,2}";
+
+                    Console.WriteLine("What time would you like the appointment to start? ('hh:mm'):");
+                    hoursMinutes = Console.ReadLine();
+                    if (Regex.IsMatch(hoursMinutes, pattern))
+                    {
+                        string[] hhmmString = hoursMinutes.Split(':');
+                        int hhInt = Int32.Parse(hhmmString[0]);
+                        int mmInt = Int32.Parse(hhmmString[1]);
+
+                        if ((hhInt >= 0 && hhInt <= 23) &&
+                            (mmInt >= 0 && mmInt <= 59))
+                        {
+                            if (mmInt >= 0 && mmInt < 15)
+                            {
+                                mmInt = 0;
+                            }
+                            else if (mmInt >= 15 && mmInt < 30)
+                            {
+                                mmInt = 15;
+                            }
+                            else if (mmInt >= 30 && mmInt < 45)
+                            {
+                                mmInt = 30;
+                            }
+                            else if (mmInt >= 45 && mmInt < 60)
+                            {
+                                mmInt = 45;
+                            }
+
+                            TimeSpan hhmm = new TimeSpan(hhInt, mmInt, 0);
+                            startTime = date + hhmm;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid Input. Try Again.");
+                    }
+                }
+                if(startTime > DateTime.Now)
                 {
                     break;
                 }
                 else
                 {
-                    Console.WriteLine("Invalid Input. Try again.");
+                    Console.WriteLine("This program is great but it isn't a TIME MACHINE.\nCannot book appointments in the past....How about trying again?");
                 }
-            }
-            while (true)
-            {
-                string pattern = @"\d{1,2}\:\d{1,2}";
-
-                Console.WriteLine("What time would you like the appointment to start? ('hh:mm'):");
-                hoursMinutes = Console.ReadLine();
-                if (Regex.IsMatch(hoursMinutes, pattern))
-                {
-                    string[] hhmmString = hoursMinutes.Split(':');
-                    int hhInt = Int32.Parse(hhmmString[0]);
-                    int mmInt = Int32.Parse(hhmmString[1]);
-
-                    if ((hhInt >= 0 && hhInt <= 23) &&
-                        (mmInt >= 0 && mmInt <= 59))
-                    {
-                        if (mmInt >= 0 && mmInt < 15)
-                        {
-                            mmInt = 0;
-                        }
-                        else if (mmInt >= 15 && mmInt < 30)
-                        {
-                            mmInt = 15;
-                        }
-                        else if (mmInt >= 30 && mmInt < 45)
-                        {
-                            mmInt = 30;
-                        }
-                        else if (mmInt >= 45 && mmInt < 60)
-                        {
-                            mmInt = 45;
-                        }
-
-                        TimeSpan hhmm = new TimeSpan(hhInt, mmInt, 0);
-                        startTime = date + hhmm;
-                        break;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Invalid Input. Try Again.");
-                }
-            }
+            }        
             while (true)
             {
                 string pattern = @"\d{1,2}\:\d{1,2}";
@@ -211,7 +224,6 @@ namespace EventScheduler.UI
                     Console.WriteLine("{0}", error);
                 }
             }
-
             //Get service to be scheduled
             servicesUI.DisplayServices();
             while (true)
@@ -224,12 +236,9 @@ namespace EventScheduler.UI
                 }
                 else { Console.WriteLine("Invalid Input. Try again."); }
             }
-
             //Get list of all employees
             var employees = UseDB.SelectEmployees();
             var emp = new EmpAvailability();
-            
-
             //Remove any employee from list that is unavailable
             foreach (Employee employee in employees.ToList())
             {
@@ -239,23 +248,17 @@ namespace EventScheduler.UI
                     if (!emp.IsEmployeeAvailable(employee.ID, apt.StartTime, apt.EndTime))
                     {
                         employees.Remove(employee);
-                        //Console.WriteLine("In the loop");
-                        //Console.Read();
                     }
                 }
-                //Console.WriteLine("We are in the loop");
-                //Console.ReadLine();
                 if(!emp.IsEmployeeAvailable(employee.ID, startTime, endTime))
                 {
                     employees.Remove(employee);
                 }
-
-
             }
             //If there are not available employees, start booking process over.
             if (!employees.Any())
             {
-                Console.WriteLine("No employees are available to perform that service on that day and time. Press enter to try again.");
+                Console.WriteLine("All employees are either booked or unavailable during that time frame. How about trying again?");
                 Console.Read();
                 Console.Clear();
                 this.DisplayScreen();
@@ -313,7 +316,6 @@ namespace EventScheduler.UI
 
                // return new Appointment(customerID, serviceID, employeeID, startTime, endTime);
             }
-
         }
     }
 }

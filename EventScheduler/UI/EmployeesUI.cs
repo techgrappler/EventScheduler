@@ -152,13 +152,18 @@ namespace EventScheduler.UI
 
             while (true)
             {
+                var emp = new Employee();
                 Console.WriteLine("Enter the ID of the Employee you wish to remove: ");
                 id = Console.ReadLine();
-                if (Int32.TryParse(id, out idInt))
+                if (Int32.TryParse(id, out idInt)                               )
                 {
-                    return idInt;
+                    if (emp.IsAny(idInt))
+                    {
+                        return idInt;
+                    }
+                    else { Console.WriteLine("That employee ID does not exist in the system."); }
                 }
-                else { Console.WriteLine("Invalid Input. Try Again."); }
+                else { Console.WriteLine("Invalid input. Try Again."); }
 
             }
         }

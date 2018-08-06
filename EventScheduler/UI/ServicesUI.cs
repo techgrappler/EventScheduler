@@ -138,13 +138,19 @@ namespace EventScheduler.UI
 
             while (true)
             {
+                var service = new Service();
                 Console.WriteLine("Enter the ID of the service you wish to remove: ");
                 id = Console.ReadLine();
                 if (Int32.TryParse(id, out idInt))
                 {
-                    return idInt;
+                    if (service.IsAny(idInt))
+                    {
+                        return idInt;
+                    } 
+                    else { Console.WriteLine("That service ID is not in the system. Try again."); }
+                    
                 }
-                else { Console.WriteLine("Invalid Input. Try Again."); }
+                else { Console.WriteLine("Invalid input or that service ID does not exist in the system. Try Again."); }
 
             }
         }
