@@ -1,0 +1,7 @@
+﻿UPDATE DailyAvailability SET StartTime='00:00', EndTime='00:00' WHERE EmployeeID=1 AND DayOfWeek='Sunday'
+UPDATE DailyAvailability SET StartTime='00:00', EndTime='00:00' WHERE EmployeeID=2 AND DayOfWeek='Monday'
+UPDATE DailyAvailability SET StartTime='00:00', EndTime='00:00' WHERE EmployeeID=3 AND DayOfWeek='Tuesday'
+UPDATE DailyAvailability SET StartTime='00:00', EndTime='00:00' WHERE EmployeeID=4 AND DayOfWeek='Wednesday'
+UPDATE DailyAvailability SET StartTime='00:00', EndTime='00:00' WHERE EmployeeID=5 AND DayOfWeek='Thursday'
+UPDATE DailyAvailability SET StartTime='00:00', EndTime='00:00' WHERE EmployeeID=6 AND DayOfWeek='Friday'
+UPDATE DailyAvailability SET StartTime='00:00', EndTime='00:00' WHERE EmployeeID=20 AND DayOfWeek='Saturday'

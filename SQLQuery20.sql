@@ -1,0 +1,7 @@
+﻿UPDATE DailyAvailability SET StartTime='08:00', EndTime='14:00' WHERE EmployeeID=1 AND DayOfWeek LIKE '[DSMTWF]%'
+UPDATE DailyAvailability SET StartTime='14:00', EndTime='18:00' WHERE EmployeeID=2 AND DayOfWeek LIKE '[DSMTWF]%'
+UPDATE DailyAvailability SET StartTime='08:00', EndTime='10:00' WHERE EmployeeID=3 AND DayOfWeek LIKE '[DSMTWF]%'
+UPDATE DailyAvailability SET StartTime='10:00', EndTime='14:00' WHERE EmployeeID=4 AND DayOfWeek LIKE '[DSMTWF]%'
+UPDATE DailyAvailability SET StartTime='18:00', EndTime='20:00' WHERE EmployeeID=5 AND DayOfWeek LIKE '[DSMTWF]%'
+UPDATE DailyAvailability SET StartTime='06:00', EndTime='08:00' WHERE EmployeeID=6 AND DayOfWeek LIKE '[DSMTWF]%'
+UPDATE DailyAvailability SET StartTime='16:00', EndTime='22:00' WHERE EmployeeID=20 AND DayOfWeek LIKE '[DSMTWF]%'

@@ -1,0 +1,1 @@
+﻿SELECT DailyAvailability.EmployeeID, Employees.FName, Employees.LName, DailyAvailability.DayOfWeek, DailyAvailability.StartTime, DailyAvailability.EndTime FROM DailyAvailability JOIN Employees ON Employees.EmployeeID = DailyAvailability.EmployeeID WHERE DayOfWeek = 'Monday'

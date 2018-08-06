@@ -83,15 +83,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="UMLClassDiagram.cd" />
+    <None Include="UML CLASS DIAGRAM.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestDB.mdf">
+    <Content Include="EventSchedulerDB.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDB_log.ldf">
+    <Content Include="EventSchedulerDB_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>TestDB.mdf</DependentUpon>
+      <DependentUpon>EventSchedulerDB.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

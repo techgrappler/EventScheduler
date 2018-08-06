@@ -1,0 +1,1 @@
+﻿INSERT INTO Customers (FName, LName) VALUES ('Johny', 'Hale'); SELECT SCOPE_IDENTITY()

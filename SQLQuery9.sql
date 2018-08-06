@@ -1,0 +1,2 @@
+﻿IF EXISTS (SELECT * From EmpAvailability WHERE EmployeeID=1 AND Time='2018-07-15 20:45:00.000') UPDATE EmpAvailability SET IsBooked = 1 WHERE Time='2018-07-15 16:45:00.000'
+ELSE INSERT INTO EmpAvailability(EmployeeID, Time, IsAvailable, IsBooked) VALUES (1, '2018-07-15 20:45:00.000', 0, 1) 

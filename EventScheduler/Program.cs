@@ -65,8 +65,8 @@ namespace EventScheduler
 
 
             //Run the Event Scheduler app
-            Console.SetWindowSize(200, 50);
-            UseDB.ConnectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = " + "\"C:\\Users\\Samuel Fletcher\\source\\repos\\EventScheduler\\EventScheduler\\TestDB.mdf\"" + "; Integrated Security = True; Connect Timeout = 30";
+
+
             //var daysOfWeek = new string[] { "DailyDefault", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
             //var ids = new int[] { 1, 2, 3, 4, 5, 6, 20 };
             //foreach (int id in ids)
@@ -77,12 +77,12 @@ namespace EventScheduler
             //    }
             //}
 
-
+            string localDBPath = "\"C:\\Users\\Samuel Fletcher\\source\\repos\\EventScheduler\\EventScheduler\\EventSchedulerDB.mdf\"";
+            Console.SetWindowSize(200, 50);
+            UseDB.ConnectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = " + localDBPath + "; Integrated Security = True; Connect Timeout = 30";
             MainUI UI = new MainUI("Event Scheduler", "v1.0");
             UI.DisplayScreen();
             Console.ReadLine();
-
-
 
         }
     }
